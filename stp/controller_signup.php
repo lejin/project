@@ -10,7 +10,13 @@ if(isset($_POST['user_type']))
 	$username=$_POST['username'];
 	$password=$_POST['password'];
         $email=$_POST['email'];
-        $insert_query="insert into tbl_user(tbl_user.F_Name,tbl_user.L_Name,tbl_user.User_Name,tbl_user.Password,tbl_user.User_Type_ID,tbl_user.Institute_ID,tbl_user.Recovery_Mail) values('$firstname','$lastname','$username','$password','$user_type','$institute','$email')";
+        $approval_status=0;
+        if($user_type==3)
+        {
+//            exit();
+            $approval_status=1;
+        }
+        $insert_query="insert into tbl_user(tbl_user.F_Name,tbl_user.L_Name,tbl_user.User_Name,tbl_user.Password,tbl_user.User_Type_ID,tbl_user.Institute_ID,tbl_user.Recovery_Mail,tbl_user.user_approoved) values('$firstname','$lastname','$username','$password','$user_type','$institute','$email','$approval_status')";
 	$query = mysqli_query($con,$insert_query)
         or die(mysqli_error());
                 $userid=mysqli_insert_id($con);

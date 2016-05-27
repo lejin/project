@@ -1,4 +1,5 @@
 <?php
+include './admin_session_check.php';
 include './config.php';
 
         $id=$_POST['id'];
@@ -8,7 +9,7 @@ include './config.php';
 		if((mysqli_affected_rows($con) > 0))
 		{
                                          
-			header("location:staff_home.php");
+			header("location:admin_home.php");
 		}
 		else
 		{
