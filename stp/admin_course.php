@@ -1,7 +1,8 @@
 <?php
 include './admin_session_check.php';
 include './config.php';
-$programs_dropdown_query="select * from tbl_programs";
+//$programs_dropdown_query="select * from tbl_programs";
+$programs_dropdown_query="select Program_ID,program_Name,Institute_Name from tbl_programs tb_p INNER JOIN tbl_institute tbl_i WHERE tb_p.Institute_ID = tbl_i.Institute_ID";
 
 ?>
 <!DOCTYPE html>
@@ -230,7 +231,7 @@ $programs_dropdown_query="select * from tbl_programs";
                                                  ?>
 				<option value="">Please Select </option>
                                 <?php while($row = $results2->fetch_assoc()) { ?>
-                                <option value="<?php echo $row["Program_ID"]; ?>"><?php echo $row["program_Name"]; ?></option>
+                                <option value="<?php echo $row["Program_ID"]; ?>"><?php echo $row["program_Name"]."(".$row["Institute_Name"].")"; ?></option>
                                 <?php } 
                                 $results2->free();
                                 // close connection 
