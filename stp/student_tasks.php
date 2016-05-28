@@ -88,6 +88,9 @@ if ($connection2->errno) {
                                     <th>Task name</th>
                                     <th>Course</th>
                                     <th>Task description</th>
+                                    <th>Preferred hours</th>
+                                    <th>Completed hours</th>
+                                    <th>Start date</th>
                                     <th>Due date</th>
                                     <th>Action</th>
                                 </tr>
@@ -108,20 +111,31 @@ WHERE uc.User_ID=?";
                                     echo $connection->error;
                                     while ($stmt->fetch()) {
 //                                       fetch all tasks of the current course with id $cid
-                                        $task_query = "SELECT task.Task_ID,task.Task_Name,task.Task_Description,task.Task_due_date FROM tbl_task task WHERE task.course_id=?";
+                                        $task_query = "SELECT task.Task_ID,task.Task_Name,task.Task_Description,task.Task_due_date,
+ task.Task_start_date,task.preferred_hour,task.weightage,(
+SELECT stask.completed_hours
+FROM tbl_student_task stask
+WHERE stask.student_id=? AND stask.task_id=task.Task_ID) completed_hours
+FROM tbl_task task
+WHERE task.course_id=?";
                                         if (($stmt_task = $connection->prepare($task_query))) {
-                                            $stmt_task->bind_param('i', $cid);
+                                            $stmt_task->bind_param('ii', $user_id,$cid);
                                             $stmt_task->execute();
-                                            $stmt_task->bind_result($task_id, $task_name, $task_desc, $task_due_date);
+                                            $stmt_task->bind_result($task_id, $task_name, $task_desc, $task_due_date, $task_start_date, $task_pref_hours, $task_weightage,$completed_hours);
                                             while ($stmt_task->fetch()) {
                                                 ?>
                                                 <tr>
                                                     <td><?php echo $task_name; ?></td>
                                                     <td><?php echo $course_name; ?></td>
                                                     <td><?php echo $task_desc; ?></td>
+                                                    <td><?php echo $task_pref_hours; ?></td>
+                                                    <td><?php echo $completed_hours; ?></td>
+                                                    <td><?php echo $task_start_date; ?></td>
                                                     <td><?php echo $task_due_date; ?></td>
                                                     <td>
-                                                        <a class="btn btn-success" onclick="alert('click');">
+                                                        <a class="btn btn-success" onclick="$('#user_id').val(<?php echo $user_id; ?>);
+                                                                                $('#task_id').val(<?php echo $task_id; ?>);
+                                                                                $('#edit_modal').modal('show');">
                                                             <i class="fa fa-pencil fa-lg"></i> Add progress</a>
                                                     </td>
                                                 </tr>
@@ -157,70 +171,6 @@ WHERE uc.User_ID=?";
                 <!-- /footer content -->
             </div>
         </div>
-        <!-- Small modal -->
-        <div id="add_modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel2">Add Institute</h4>
-                    </div>
-                    <form action="admin_controller_add_institute.php" method="post">
-                        <div class="modal-body">
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <div class="col-md-6">  
-                                            <label for="name">Institute Name </label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="text" id="name" name="name" required="required" placeholder="institute name" class="form-control">
-                                        </div>
-                                    </div>
-                                    <br/>
-                                    <br/>
-                                    <div class="form-group">
-                                        <div class="col-md-6">  
-                                            <label for="address">Address </label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="text" id="address" name="address" required="required" placeholder="institute address" class="form-control">
-                                        </div>
-                                    </div>
-                                    <br/>
-                                    <br/>
-                                    <div class="form-group">
-                                        <div class="col-md-6">  
-                                            <label for="phone">Phone Number </label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="text" id="phone" name="phone" required="required" placeholder="institute address" class="form-control ">
-                                        </div>
-                                    </div>
-                                    <br/>
-                                    <br/>
-                                    <div class="form-group">
-                                        <div class="col-md-6">  
-                                            <label for="phone">Email </label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="email" id="email" name="email" required="required" placeholder="institute email" class="form-control ">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
         <!-- edit modal -->
         <div class="modal fade bs-example-modal-sm" tabindex="-1" id="edit_modal" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
@@ -229,51 +179,26 @@ WHERE uc.User_ID=?";
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
                         </button>
-                        <h4 class="modal-title" id="myModalLabel2">Add Institute</h4>
+                        <h4 class="modal-title" id="myModalLabel2">Enter progress</h4>
                     </div>
-                    <form action="admin_controller_update_institute.php" method="post">
+                    <form action="student_controller_update_task.php" method="post">
                         <div class="modal-body">
 
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <div class="col-md-6">  
-                                            <label for="name">Institute Name </label>
+                                            <label for="time">Total progress in hours </label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" id="edit_name" name="name" required="required" placeholder="institute name" class="form-control">
+                                            <input type="text" id="edit_name" name="time" required="required" placeholder="Example 1.5" class="form-control">
+                                            <input type="hidden" id='task_id' name='task_id'>
+                                            <input type="hidden" id='user_id' name='user_id'>
                                         </div>
                                     </div>
                                     <br/>
                                     <br/>
-                                    <div class="form-group">
-                                        <div class="col-md-6">  
-                                            <label for="address">Address </label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="text" id="edit_address" name="address" required="required" placeholder="institute address" class="form-control">
-                                        </div>
-                                    </div>
-                                    <br/>
-                                    <br/>
-                                    <div class="form-group">
-                                        <div class="col-md-6">  
-                                            <label for="phone">Phone Number </label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="text" id="edit_phone" name="phone" required="required" placeholder="institute address" class="form-control ">
-                                        </div>
-                                    </div>
-                                    <br/>
-                                    <br/>
-                                    <div class="form-group">
-                                        <div class="col-md-6">  
-                                            <label for="phone">Email </label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="email" id="edit_email" name="email" required="required" placeholder="institute email" class="form-control ">
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
