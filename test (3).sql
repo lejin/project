@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS `tbl_semester` (
   CONSTRAINT `tbl_semester_ibfk_1` FOREIGN KEY (`Course_ID`) REFERENCES `tbl_course` (`Course_ID`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
--- Dumping data for table test.tbl_semester: ~1 rows (approximately)
+-- Dumping data for table test.tbl_semester: ~0 rows (approximately)
 DELETE FROM `tbl_semester`;
 /*!40000 ALTER TABLE `tbl_semester` DISABLE KEYS */;
 INSERT INTO `tbl_semester` (`Semester_ID`, `Start_Date`, `End_Date`, `No_Of_Weeks`, `Course_ID`) VALUES
@@ -222,6 +222,9 @@ CREATE TABLE IF NOT EXISTS `tbl_student_task` (
 -- Dumping data for table test.tbl_student_task: ~0 rows (approximately)
 DELETE FROM `tbl_student_task`;
 /*!40000 ALTER TABLE `tbl_student_task` DISABLE KEYS */;
+INSERT INTO `tbl_student_task` (`id_student_task`, `student_id`, `task_id`, `last_update`, `completed_hours`) VALUES
+	(2, 6, 1, '2016-05-29 01:50:04', 2),
+	(4, 6, 2, '2016-05-29 02:06:46', 3);
 /*!40000 ALTER TABLE `tbl_student_task` ENABLE KEYS */;
 
 
@@ -248,8 +251,8 @@ CREATE TABLE IF NOT EXISTS `tbl_task` (
 DELETE FROM `tbl_task`;
 /*!40000 ALTER TABLE `tbl_task` DISABLE KEYS */;
 INSERT INTO `tbl_task` (`Task_ID`, `Task_Name`, `author_id`, `weightage`, `course_id`, `preferred_hour`, `Task_Description`, `Task_due_date`, `Task_start_date`) VALUES
-	(1, 'new task', 5, 0, 1, 0, 'new test task', '2016-06-04', NULL),
-	(2, 'second task', 5, 0, 2, 0, 'second test task', '2016-06-08', NULL);
+	(1, 'new task', 5, 0, 1, 30, 'new test task', '2016-06-04', '2016-05-29'),
+	(2, 'second task', 5, 0, 2, 50, 'second test task', '2016-06-08', '2016-05-29');
 /*!40000 ALTER TABLE `tbl_task` ENABLE KEYS */;
 
 
