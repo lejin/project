@@ -61,8 +61,8 @@ if ($connection->errno) {
             function add_course(cid, userid)
             {
                 $.post('student_controller_register4course.php', {'cid': cid, 'studentid': userid}, function(data, status) {
-                });
-                location.reload();
+                location.reload();});
+                
             }
         </script>
 
