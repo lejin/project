@@ -34,7 +34,7 @@
                 </li>
                 <li><a href="staff_profile.php"><i class="fa fa-desktop"></i> Profle</a>
                 </li>
-                <li><a href="#"><i class="fa fa-table"></i> Assignments </a>
+                <li><a href="./staff_assignment.php#"><i class="fa fa-table"></i> Assignments </a>
              
                 </li>
                 <li><a href="#"><i class="fa fa-bar-chart-o"></i> Tasks </a></li>
