@@ -98,11 +98,12 @@ INNER JOIN tbl_course_program cp
 on course.Course_ID=cp.Course_ID
 INNER JOIN tbl_user_program up
 on up.program_id=cp.Program_ID 
- where up.user_id=? and course.Course_ID NOT IN(SELECT uc.Course_ID from tbl_user_course uc)";
+ where up.user_id=6 and course.Course_ID NOT IN(SELECT uc.Course_ID from tbl_user_course uc WHERE uc.User_ID=6))";
                                 if (($stmt = $connection->prepare($course_query))) {
-                                    $stmt->bind_param('i', $user_id);
+                                    $stmt->bind_param('ii', $user_id,$user_id);
                                     $stmt->execute();
                                     $stmt->bind_result($cid, $cname, $cdesc, $cpercent_full_time);
+                                    echo $connection->error;
                                     while ($stmt->fetch()) {
                                         ?>
                                         <tr>
@@ -113,6 +114,7 @@ on up.program_id=cp.Program_ID
                                         </tr>
                                         <?php
                                     }
+                                    echo $connection->error;
                                     $stmt->free_result();
                                 }
                                 ?>
