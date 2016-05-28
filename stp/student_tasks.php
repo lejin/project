@@ -104,7 +104,7 @@ WHERE uc.User_ID=?";
                                 if (($stmt = $connection2->prepare($course_query))) {
                                     $stmt->bind_param('i', $user_id);
                                     $stmt->execute();
-                                    $stmt->bind_result($cid,$course_name);
+                                    $stmt->bind_result($cid, $course_name);
                                     echo $connection->error;
                                     while ($stmt->fetch()) {
 //                                       fetch all tasks of the current course with id $cid
@@ -118,7 +118,6 @@ WHERE uc.User_ID=?";
                                                 <tr>
                                                     <td><?php echo $task_name; ?></td>
                                                     <td><?php echo $course_name; ?></td>
-                                                    <td><?php echo $task_name; ?></td>
                                                     <td><?php echo $task_desc; ?></td>
                                                     <td><?php echo $task_due_date; ?></td>
                                                     <td>
