@@ -278,7 +278,7 @@ INSERT INTO `tbl_user_institute` (`User_Institute_ID`, `User_ID`, `Institute_ID`
 -- Dumping structure for table test.tbl_user_program
 DROP TABLE IF EXISTS `tbl_user_program`;
 CREATE TABLE IF NOT EXISTS `tbl_user_program` (
-  `user_program_id` int(11) NOT NULL,
+  `user_program_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `program_id` int(11) NOT NULL,
   PRIMARY KEY (`user_program_id`),
@@ -286,11 +286,13 @@ CREATE TABLE IF NOT EXISTS `tbl_user_program` (
   KEY `FK_tbl_user_program_tbl_programs` (`program_id`),
   CONSTRAINT `FK_tbl_user_program_tbl_programs` FOREIGN KEY (`program_id`) REFERENCES `tbl_programs` (`Program_ID`) ON DELETE CASCADE,
   CONSTRAINT `FK_tbl_user_program_tbl_user` FOREIGN KEY (`user_id`) REFERENCES `tbl_user` (`User_ID`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Dumping data for table test.tbl_user_program: ~0 rows (approximately)
+-- Dumping data for table test.tbl_user_program: ~1 rows (approximately)
 DELETE FROM `tbl_user_program`;
 /*!40000 ALTER TABLE `tbl_user_program` DISABLE KEYS */;
+INSERT INTO `tbl_user_program` (`user_program_id`, `user_id`, `program_id`) VALUES
+	(1, 6, 1);
 /*!40000 ALTER TABLE `tbl_user_program` ENABLE KEYS */;
 
 
