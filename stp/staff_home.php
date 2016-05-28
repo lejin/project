@@ -66,9 +66,9 @@ include './staff_profile_complete_check.php';
 
       <!-- page content -->
       <div class="right_col" role="main">
-          <div class="col-md-8" style="margin-top: 30px;">
+          <div class="col-md-12" style="margin-top: 30px;">
           <div class="row top_tiles">
-            <div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="animated flipInY col-lg-3 col-md-3 col-sm-3 col-xs-12">
               <div class="tile-stats">
                 <div class="icon"><i class="fa fa-caret-square-o-right"></i>
                 </div>
@@ -78,7 +78,7 @@ include './staff_profile_complete_check.php';
                 <p><?php echo $user_count; ?> active users.</p>
               </div>
             </div>
-            <div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="animated flipInY col-lg-3 col-md-3 col-sm-3 col-xs-12">
               <div class="tile-stats">
                 <div class="icon"><i class="fa fa-comments-o"></i>
                 </div>
@@ -90,7 +90,7 @@ include './staff_profile_complete_check.php';
             </div>
               
 
-            <div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="animated flipInY col-lg-3 col-md-3 col-sm-3 col-xs-12">
               <div class="tile-stats">
                 <div class="icon"><i class="fa fa-sort-amount-desc"></i>
                 </div>
@@ -100,7 +100,7 @@ include './staff_profile_complete_check.php';
                 <p><?php echo $program_count; ?> different programs.</p>
               </div>
             </div>
-            <div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="animated flipInY col-lg-3 col-md-3 col-sm-3 col-xs-12">
               <div class="tile-stats">
                 <div class="icon"><i class="fa fa-check-square-o"></i>
                 </div>
