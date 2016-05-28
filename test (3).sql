@@ -97,7 +97,7 @@ DELETE FROM `tbl_course_program`;
 /*!40000 ALTER TABLE `tbl_course_program` DISABLE KEYS */;
 INSERT INTO `tbl_course_program` (`Course_Program_ID`, `Course_ID`, `Program_ID`) VALUES
 	(2, 2, 1),
-	(10, 1, 2);
+	(10, 1, 1);
 /*!40000 ALTER TABLE `tbl_course_program` ENABLE KEYS */;
 
 
@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `tbl_semester` (
   CONSTRAINT `tbl_semester_ibfk_1` FOREIGN KEY (`Course_ID`) REFERENCES `tbl_course` (`Course_ID`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
--- Dumping data for table test.tbl_semester: ~0 rows (approximately)
+-- Dumping data for table test.tbl_semester: ~1 rows (approximately)
 DELETE FROM `tbl_semester`;
 /*!40000 ALTER TABLE `tbl_semester` DISABLE KEYS */;
 INSERT INTO `tbl_semester` (`Semester_ID`, `Start_Date`, `End_Date`, `No_Of_Weeks`, `Course_ID`) VALUES
@@ -298,7 +298,7 @@ DELETE FROM `tbl_user_course`;
 /*!40000 ALTER TABLE `tbl_user_course` DISABLE KEYS */;
 INSERT INTO `tbl_user_course` (`User_Course_ID`, `Course_ID`, `User_ID`) VALUES
 	(9, 1, 5),
-	(10, 1, 6);
+	(11, 1, 6);
 /*!40000 ALTER TABLE `tbl_user_course` ENABLE KEYS */;
 
 
