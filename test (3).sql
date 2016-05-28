@@ -528,3 +528,13 @@ ALTER TABLE `tbl_user_task`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+--
+-- Constraints for table `tbl_assignment`
+--
+ALTER TABLE `tbl_assignment`
+	ADD COLUMN `Course_ID` INT NOT NULL AFTER `preffereed_Hours`;
+
+ALTER TABLE `tbl_assignment`
+	ADD CONSTRAINT `FK_tbl_assignment_tbl_course` FOREIGN KEY (`Course_ID`) REFERENCES `tbl_course` (`Course_ID`);
