@@ -1,7 +1,14 @@
 <?php
 include './student_session_check.php';
-include './config.php';
-include './admin_home_counts.php';
+require_once './config.php';
+//mysqli connection
+$connection = new mysqli();
+$connection->connect($mysqli_host, $mysqli_user, $mysqli_password, $mysqli_database);
+if ($connection->errno) {
+    printf("Unable to connect to the database:<br /> %s", $connection->error);
+    exit();
+}
+//mysqli connection
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,6 +57,14 @@ include './admin_home_counts.php';
 
 
     <body class="nav-md">
+        <script>
+            function add_course(cid, userid)
+            {
+                $.post('student_controller_register4course.php', {'cid': cid, 'studentid': userid}, function(data, status) {
+                });
+                location.reload();
+            }
+        </script>
 
         <div class="container body">
 
@@ -74,14 +89,36 @@ include './admin_home_counts.php';
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Tiger Nixon</td>
-                                    <td>System Architect</td>
-                                </tr>
-                                <tr>
-                                    <td>Tiger Nixon2</td>
-                                    <td>System Architect2</td>
-                                </tr>
+                                <!--fetch and add all rows of course in the institute registered by student-->
+                                <?php
+                                $user_id = $_SESSION['user_id'];
+                                $course_query = "SELECT course.Course_ID,course.Course_Name,course.Course_Dsecription,course.Percentage_Of_Fulltime
+FROM tbl_course course
+INNER JOIN tbl_course_program cp
+on course.Course_ID=cp.Course_ID
+INNER JOIN tbl_user_program up
+on up.program_id=cp.Program_ID 
+ where up.user_id=? and course.Course_ID NOT IN(SELECT uc.Course_ID from tbl_user_course uc)";
+                                if (($stmt = $connection->prepare($course_query))) {
+                                    $stmt->bind_param('i', $user_id);
+                                    $stmt->execute();
+                                    $stmt->bind_result($cid, $cname, $cdesc, $cpercent_full_time);
+                                    while ($stmt->fetch()) {
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $cname; ?></td>
+                                            <td>
+                                                <button class="btn btn-success" value="<?php echo $cid; ?>" onclick="add_course('<?php echo $cid; ?>', '<?php echo $user_id; ?>')">Add course</button>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    $stmt->free_result();
+                                }
+                                ?>
+
+                                <!--end of fetch and add all rows of course in the institute registered by student-->
+
                             </tbody>
                         </table>
 
@@ -265,24 +302,24 @@ include './admin_home_counts.php';
         <script src="js/datatables/dataTables.scroller.min.js"></script>
         <!--table script-->
         <script type="text/javascript">
-            $(document).ready(function() {
-                $('#datatable').dataTable();
-                $('#datatable-keytable').DataTable({
-                    keys: true
-                });
-                $('#datatable-responsive').DataTable();
-                $('#datatable-scroller').DataTable({
-                    ajax: "js/datatables/json/scroller-demo.json",
-                    deferRender: true,
-                    scrollY: 380,
-                    scrollCollapse: true,
-                    scroller: true
-                });
-                var table = $('#datatable-fixed-header').DataTable({
-                    fixedHeader: true
-                });
-            });
-            TableManageButtons.init();
+                                                    $(document).ready(function() {
+                                                        $('#datatable').dataTable();
+                                                        $('#datatable-keytable').DataTable({
+                                                            keys: true
+                                                        });
+                                                        $('#datatable-responsive').DataTable();
+                                                        $('#datatable-scroller').DataTable({
+                                                            ajax: "js/datatables/json/scroller-demo.json",
+                                                            deferRender: true,
+                                                            scrollY: 380,
+                                                            scrollCollapse: true,
+                                                            scroller: true
+                                                        });
+                                                        var table = $('#datatable-fixed-header').DataTable({
+                                                            fixedHeader: true
+                                                        });
+                                                    });
+                                                    TableManageButtons.init();
         </script>
         <!--table script ends-->
     </body>
