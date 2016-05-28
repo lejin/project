@@ -21,11 +21,12 @@ DROP TABLE IF EXISTS `tbl_assignment`;
 CREATE TABLE IF NOT EXISTS `tbl_assignment` (
   `Assignment_ID` int(11) NOT NULL AUTO_INCREMENT,
   `author_id` int(11) NOT NULL DEFAULT '0',
-  `Start_Date` varchar(250) NOT NULL,
-  `End_Date` varchar(250) NOT NULL,
+  `Start_Date` date NOT NULL,
+  `End_Date` date NOT NULL,
   `Assignment_Name` varchar(250) NOT NULL,
-  `Weightage` varchar(250) NOT NULL,
-  `preffereed_Hours` varchar(250) NOT NULL,
+  `assignment_description` varchar(250) NOT NULL,
+  `Weightage` float NOT NULL,
+  `preffereed_Hours` float NOT NULL,
   `Course_ID` int(11) NOT NULL,
   PRIMARY KEY (`Assignment_ID`),
   KEY `FK_tbl_assignment_tbl_course` (`Course_ID`),
@@ -155,7 +156,7 @@ CREATE TABLE IF NOT EXISTS `tbl_semester` (
   CONSTRAINT `tbl_semester_ibfk_1` FOREIGN KEY (`Course_ID`) REFERENCES `tbl_course` (`Course_ID`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
--- Dumping data for table test.tbl_semester: ~0 rows (approximately)
+-- Dumping data for table test.tbl_semester: ~1 rows (approximately)
 DELETE FROM `tbl_semester`;
 /*!40000 ALTER TABLE `tbl_semester` DISABLE KEYS */;
 INSERT INTO `tbl_semester` (`Semester_ID`, `Start_Date`, `End_Date`, `No_Of_Weeks`, `Course_ID`) VALUES
@@ -230,11 +231,12 @@ CREATE TABLE IF NOT EXISTS `tbl_task` (
   `Task_ID` int(11) NOT NULL AUTO_INCREMENT,
   `Task_Name` varchar(250) NOT NULL,
   `author_id` int(11) NOT NULL,
-  `weightage` int(11) NOT NULL,
+  `weightage` float NOT NULL,
   `course_id` int(11) NOT NULL,
-  `preferred_hour` int(11) NOT NULL,
+  `preferred_hour` float NOT NULL,
   `Task_Description` varchar(250) NOT NULL,
   `Task_due_date` date DEFAULT NULL,
+  `Task_start_date` date DEFAULT NULL,
   PRIMARY KEY (`Task_ID`),
   KEY `FK_tbl_task_tbl_user` (`author_id`),
   KEY `FK_tbl_task_tbl_course` (`course_id`),
@@ -245,9 +247,9 @@ CREATE TABLE IF NOT EXISTS `tbl_task` (
 -- Dumping data for table test.tbl_task: ~2 rows (approximately)
 DELETE FROM `tbl_task`;
 /*!40000 ALTER TABLE `tbl_task` DISABLE KEYS */;
-INSERT INTO `tbl_task` (`Task_ID`, `Task_Name`, `author_id`, `weightage`, `course_id`, `preferred_hour`, `Task_Description`, `Task_due_date`) VALUES
-	(1, 'new task', 5, 0, 1, 0, 'new test task', '2016-06-04'),
-	(2, 'second task', 5, 0, 2, 0, 'second test task', '2016-06-08');
+INSERT INTO `tbl_task` (`Task_ID`, `Task_Name`, `author_id`, `weightage`, `course_id`, `preferred_hour`, `Task_Description`, `Task_due_date`, `Task_start_date`) VALUES
+	(1, 'new task', 5, 0, 1, 0, 'new test task', '2016-06-04', NULL),
+	(2, 'second task', 5, 0, 2, 0, 'second test task', '2016-06-08', NULL);
 /*!40000 ALTER TABLE `tbl_task` ENABLE KEYS */;
 
 
