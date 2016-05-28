@@ -29,7 +29,7 @@
                   <li><a href="student_home.php"><i class="fa fa-home"></i> Home </a>
            
                 </li>
-                <li><a href="#"><i class="fa fa-edit"></i> Tasks</a>
+                <li><a href="student_tasks.php"><i class="fa fa-edit"></i> Tasks</a>
               
                 </li>
                 <li><a href="#"><i class="fa fa-desktop"></i> Assignments</a>
