@@ -85,6 +85,8 @@ if ($connection->errno) {
                             <thead>
                                 <tr>
                                     <th>Course name</th>
+                                    <th>Course description</th>
+                                    <th>Percentage Of Fulltime</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -108,6 +110,8 @@ on up.program_id=cp.Program_ID
                                         ?>
                                         <tr>
                                             <td><?php echo $cname; ?></td>
+                                            <td><?php echo $cname; ?></td>
+                                            <td><?php echo $cpercent_full_time; ?></td>
                                             <td>
                                                 <button class="btn btn-success" value="<?php echo $cid; ?>" onclick="add_course('<?php echo $cid; ?>', '<?php echo $user_id; ?>')">Add course</button>
                                             </td>
