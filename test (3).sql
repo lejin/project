@@ -20,6 +20,7 @@ USE `test`;
 DROP TABLE IF EXISTS `tbl_assignment`;
 CREATE TABLE IF NOT EXISTS `tbl_assignment` (
   `Assignment_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `author_id` int(11) NOT NULL DEFAULT '0',
   `Start_Date` varchar(250) NOT NULL,
   `End_Date` varchar(250) NOT NULL,
   `Assignment_Name` varchar(250) NOT NULL,
@@ -28,7 +29,9 @@ CREATE TABLE IF NOT EXISTS `tbl_assignment` (
   `Course_ID` int(11) NOT NULL,
   PRIMARY KEY (`Assignment_ID`),
   KEY `FK_tbl_assignment_tbl_course` (`Course_ID`),
-  CONSTRAINT `FK_tbl_assignment_tbl_course` FOREIGN KEY (`Course_ID`) REFERENCES `tbl_course` (`Course_ID`)
+  KEY `FK_tbl_assignment_tbl_user` (`author_id`),
+  CONSTRAINT `FK_tbl_assignment_tbl_course` FOREIGN KEY (`Course_ID`) REFERENCES `tbl_course` (`Course_ID`),
+  CONSTRAINT `FK_tbl_assignment_tbl_user` FOREIGN KEY (`author_id`) REFERENCES `tbl_user` (`User_ID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Dumping data for table test.tbl_assignment: ~0 rows (approximately)
@@ -179,14 +182,61 @@ DELETE FROM `tbl_semester_course`;
 /*!40000 ALTER TABLE `tbl_semester_course` ENABLE KEYS */;
 
 
+-- Dumping structure for table test.tbl_student_assignment
+DROP TABLE IF EXISTS `tbl_student_assignment`;
+CREATE TABLE IF NOT EXISTS `tbl_student_assignment` (
+  `id_student_assignment` int(11) NOT NULL AUTO_INCREMENT,
+  `student_id` int(11) NOT NULL DEFAULT '0',
+  `assignment_id` int(11) NOT NULL DEFAULT '0',
+  `completed_hours` float NOT NULL DEFAULT '0',
+  `modified_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_student_assignment`),
+  KEY `FK_tbl_student_assignment_tbl_user` (`student_id`),
+  KEY `FK_tbl_student_assignment_tbl_assignment` (`assignment_id`),
+  CONSTRAINT `FK_tbl_student_assignment_tbl_assignment` FOREIGN KEY (`assignment_id`) REFERENCES `tbl_assignment` (`Assignment_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_tbl_student_assignment_tbl_user` FOREIGN KEY (`student_id`) REFERENCES `tbl_user` (`User_ID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table test.tbl_student_assignment: ~0 rows (approximately)
+DELETE FROM `tbl_student_assignment`;
+/*!40000 ALTER TABLE `tbl_student_assignment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tbl_student_assignment` ENABLE KEYS */;
+
+
+-- Dumping structure for table test.tbl_student_task
+DROP TABLE IF EXISTS `tbl_student_task`;
+CREATE TABLE IF NOT EXISTS `tbl_student_task` (
+  `id_student_task` int(11) NOT NULL AUTO_INCREMENT,
+  `student_id` int(11) DEFAULT '0',
+  `task_id` int(11) DEFAULT '0',
+  `last_update` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_student_task`),
+  KEY `FK_tbl_student_task_tbl_task` (`task_id`),
+  KEY `FK_tbl_student_task_tbl_user` (`student_id`),
+  CONSTRAINT `FK_tbl_student_task_tbl_task` FOREIGN KEY (`task_id`) REFERENCES `tbl_task` (`Task_ID`) ON DELETE CASCADE,
+  CONSTRAINT `FK_tbl_student_task_tbl_user` FOREIGN KEY (`student_id`) REFERENCES `tbl_user` (`User_ID`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table test.tbl_student_task: ~0 rows (approximately)
+DELETE FROM `tbl_student_task`;
+/*!40000 ALTER TABLE `tbl_student_task` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tbl_student_task` ENABLE KEYS */;
+
+
 -- Dumping structure for table test.tbl_task
 DROP TABLE IF EXISTS `tbl_task`;
 CREATE TABLE IF NOT EXISTS `tbl_task` (
   `Task_ID` int(11) NOT NULL AUTO_INCREMENT,
   `Task_Name` varchar(250) NOT NULL,
+  `author_id` int(11) NOT NULL,
+  `course_id` int(11) NOT NULL,
   `Task_Description` varchar(250) NOT NULL,
   `Task_due_date` date DEFAULT NULL,
-  PRIMARY KEY (`Task_ID`)
+  PRIMARY KEY (`Task_ID`),
+  KEY `FK_tbl_task_tbl_user` (`author_id`),
+  KEY `FK_tbl_task_tbl_course` (`course_id`),
+  CONSTRAINT `FK_tbl_task_tbl_course` FOREIGN KEY (`course_id`) REFERENCES `tbl_course` (`Course_ID`) ON DELETE CASCADE,
+  CONSTRAINT `FK_tbl_task_tbl_user` FOREIGN KEY (`author_id`) REFERENCES `tbl_user` (`User_ID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Dumping data for table test.tbl_task: ~0 rows (approximately)
