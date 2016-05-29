@@ -14,7 +14,7 @@ $hours = $_POST['time'];
 $user_id=$_POST['user_id'];
 $assignment_id=$_POST['assignment_id'];
 //delete row
-$delete_query="DELETE from tbl_student_assignment where tbl_student_assignment.id_student_assignment=? and tbl_student_assignment.student_id=?";
+$delete_query="DELETE from tbl_student_assignment where tbl_student_assignment.assignment_id=? and tbl_student_assignment.student_id=?";
 if(($stmt=$connection->prepare($delete_query)))
 {
     $stmt->bind_param('ii',$assignment_id,$user_id);
@@ -30,7 +30,7 @@ $stmt->free_result();
 $insert_query="INSERT INTO tbl_student_assignment(tbl_student_assignment.student_id,tbl_student_assignment.assignment_id,tbl_student_assignment.completed_hours) VALUES(?,?,?)";
 if(($stmt=$connection->prepare($insert_query)))
 {
-    $stmt->bind_param('iii',$user_id,$assignment_id,$hours);
+    $stmt->bind_param('iis',$user_id,$assignment_id,$hours);
     $stmt->execute();
     $connection->error;
 }
