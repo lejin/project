@@ -225,16 +225,7 @@ $course_dropdown_query="select * from tbl_course";
                                 </div>
                                 <br/>
                                 <br/>
-                                <div class="form-group">
-                                    <div class="col-md-6">  
-                                        <label for="description">Number Of Week </label>
-                                    </div>
-                                <div class="col-md-6">
-                                    <input type="text" id="week" name="week" required="required" placeholder="number of week" class="form-control">
-                                </div>
-                                </div>
-                                <br/>
-                                <br/>
+                    
                           
                             </div>
                         </div>
@@ -304,16 +295,7 @@ $course_dropdown_query="select * from tbl_course";
                                 </div>
                                 <br/>
                                 <br/>
-                                <div class="form-group">
-                                    <div class="col-md-6">  
-                                        <label for="description">Number Of Week </label>
-                                    </div>
-                                <div class="col-md-6">
-                                    <input type="text" id="edit_week" name="week" required="required" placeholder="number of week" class="form-control">
-                                </div>
-                                </div>
-                                <br/>
-                                <br/>
+                
                           
                             </div>
                         </div>
