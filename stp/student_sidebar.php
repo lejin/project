@@ -32,7 +32,7 @@
                 <li><a href="student_tasks.php"><i class="fa fa-edit"></i> Tasks</a>
               
                 </li>
-                <li><a href="#"><i class="fa fa-desktop"></i> Assignments</a>
+                <li><a href="student_assignment.php"><i class="fa fa-desktop"></i> Assignments</a>
                 </li>
                 <li><a href="#"><i class="fa fa-table"></i> Activities </a>
              
