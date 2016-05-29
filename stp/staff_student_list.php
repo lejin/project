@@ -2,7 +2,7 @@
 include './staff_session_check.php';
 include './config.php';
 $userid=$_SESSION['user_id'];
-$student_query="select tbl_user.F_Name,tbl_user.L_Name,tbl_user.Recovery_Mail,tbl_institute.Institute_Name  from tbl_user inner join tbl_user_course on tbl_user_course.User_ID=tbl_user.User_ID inner join tbl_institute on tbl_institute.Institute_ID=tbl_user.Institute_ID where tbl_user_course.Course_ID in(select tbl_user_course.Course_ID where tbl_user_course.User_ID='$userid') and tbl_user.User_Type_ID=3";
+$student_query="select distinct tbl_user.F_Name,tbl_user.L_Name,tbl_user.Recovery_Mail,tbl_institute.Institute_Name  from tbl_user inner join tbl_user_course on tbl_user_course.User_ID=tbl_user.User_ID inner join tbl_institute on tbl_institute.Institute_ID=tbl_user.Institute_ID where tbl_user_course.Course_ID in(select tbl_user_course.Course_ID where tbl_user_course.User_ID='$userid') and tbl_user.User_Type_ID=3";
 $staff_student_quer="select tbl_user.F_Name  from tbl_user inner join tbl_user_course on tbl_user_course.User_ID=tbl_user.User_ID where tbl_user_course.Course_ID=(select tbl_user_course.Course_ID where tbl_user_course.User_ID=1) and tbl_user.User_Type_ID=3";
 
 ?>
