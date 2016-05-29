@@ -144,7 +144,7 @@ $row=mysqli_fetch_array($query);
                                $results2 = $con->query($course_query);
                                while($row2 = $results2->fetch_assoc()) {
                               ?>
-                              <option <?php if($row2['Course_ID']==$row['Course_ID']){echo "selected";} ?> value="<?php echo $row2['Course_ID']; ?>"><?php echo $row2['Course_Name']; ?></option>
+                              <option <?php if($row2['Course_ID']==$row['Course_ID']){echo "selected";} ?> value="<?php echo $row2['Course_ID']; ?>"><?php echo $row2['Course_Name']; ?> <?php echo"&nbsp;&nbsp;&nbsp;&nbsp;(". $row2['program_Name'].")"; ?></option>
                               <?php
                              
                                }
