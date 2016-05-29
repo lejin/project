@@ -1,6 +1,7 @@
 <?php
 include './student_session_check.php';
 require_once './config.php';
+//echo 'here2';
 //mysqli connection
 $connection = new mysqli();
 $connection->connect($mysqli_host, $mysqli_user, $mysqli_password, $mysqli_database);
@@ -66,11 +67,67 @@ if ($connection2->errno) {
 
         <!-- 2. You can add print and export feature by adding this line -->
         <script src="http://code.highcharts.com/modules/exporting.js"></script>       
-        <script type="text/javascript">
 
+        <?php
+//create data for category section text of graph starts
+        $graph_categories = '[';
+        $pending_work = '[';
+        $completed_work = '[';
+        $flag = 0;
+        $user_id = $_SESSION['user_id'];
+        $course_query = "SELECT uc.Course_ID,course.Course_Name
+FROM tbl_user_course uc
+INNER JOIN tbl_course course
+ON course.Course_ID=uc.Course_ID
+WHERE uc.User_ID=?";
+        if (($stmt = $connection2->prepare($course_query))) {
+            $stmt->bind_param('i', $user_id);
+            $stmt->execute();
+            $stmt->bind_result($cid, $course_name);
+            echo $connection->error;
+            while ($stmt->fetch()) {
+//                                       fetch all tasks of the current course with id $cid in ascending order of end date
+                $task_query = "SELECT assi.Assignment_ID,assi.Assignment_Name,assi.assignment_description,
+assi.End_Date,assi.Start_Date,assi.preffereed_Hours,assi.Weightage,(SELECT sassig.completed_hours
+FROM tbl_student_assignment sassig
+WHERE sassig.student_id=? AND sassig.assignment_id=assi.Assignment_ID)
+FROM tbl_assignment assi
+WHERE assi.Course_ID=? ORDER BY assi.End_Date ASC";
+
+                if (($stmt_task = $connection->prepare($task_query))) {
+                    $stmt_task->bind_param('ii', $user_id, $cid);
+                    $stmt_task->execute();
+                    $stmt_task->bind_result($assignment_id, $task_name, $task_desc, $task_due_date, $task_start_date, $task_pref_hours, $task_weightage, $completed_hours);
+                    while ($stmt_task->fetch()) {
+                        if ($flag == 0) {
+                            $graph_categories.="'" . $course_name . '/' . $task_name . '<br\>(' . $task_due_date . ')' . "'";
+                            $pending_work.='-' . ($task_pref_hours - $completed_hours);
+                            $completed_work.=$completed_hours;
+                            $flag = 1;
+                        } else {
+                            $graph_categories.=",'" . $course_name . '/' . $task_name . '<br\>(' . $task_due_date . ')' . "'";
+                            $pending_work.=",-" . ($task_pref_hours - $completed_hours);
+                            $completed_work.=',' . $completed_hours;
+                        }
+//                                                
+                    }
+//                  
+                }
+            }
+        }
+//        closing bracket
+        $graph_categories.=']';
+        $pending_work.=']';
+        $completed_work.=']';
+//create data for category section text of graph ends
+        ?>
+
+
+        <script type="text/javascript">
             $(function() {
                 // Age categories
-                var categories = ['IT1000 - Information Security/Assignment 1', 'IT1000 - Information Security/Assignment 2', 'IT1000 - Information Security/Assignment 3', 'IT6269 - ITIL2/assignment 15', 'IT6269 - ITIL2/assignment 1', 'IT6269 - ITIL2/assignment 10'];
+//                var categories = ['IT1000 - Information Security/Assignment 1', 'IT1000 - Information Security/Assignment 2', 'IT1000 - Information Security/Assignment 3', 'IT6269 - ITIL2/assignment 15', 'IT6269 - ITIL2/assignment 1', 'IT6269 - ITIL2/assignment 10'];
+                var categories = <?php echo $graph_categories; ?>;
                 $(document).ready(function() {
                     $('#container').highcharts({
                         chart: {
@@ -81,7 +138,7 @@ if ($connection2->errno) {
                             text: 'Assignments'
                         },
                         subtitle: {
-                            text: 'Completed work to the left and Pending work to the right'
+                            text: 'Completed work to the top and Pending work to the bottom'
                         },
                         xAxis: [{
                                 categories: categories,
@@ -106,7 +163,7 @@ if ($connection2->errno) {
                             },
                             labels: {
                                 formatter: function() {
-                                    return Math.abs(this.value) + '%';
+                                    return Math.abs(this.value) + 'hrs';
                                 }
                             }
                         },
@@ -117,16 +174,19 @@ if ($connection2->errno) {
                         },
                         tooltip: {
                             formatter: function() {
-                                return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
-                                        'Population: ' + Highcharts.numberFormat(Math.abs(this.point.y), 0);
+                                return '<b>' + this.series.name + ', under ' + this.point.category + '</b><br/>' +
+                                        'Hour(s): ' + Highcharts.numberFormat(Math.abs(this.point.y), 0);
                             }
                         },
                         series: [{
-                                name: 'Completed work',
-                                data: [-20, -20, -20, -20, -18, -2]
-                            }, {
                                 name: 'Pending work',
-                                data: [0, 0, 0, 0, 2, 18]
+                                data: <?php echo $pending_work; ?>
+//                                data: [-20, -20]
+
+                            }, {
+                                name: 'Completed work',
+                                data: <?php echo $completed_work; ?>
+//                                data: [10, 5,]
                             }]
                     });
                 });
@@ -249,24 +309,24 @@ if ($connection2->errno) {
         <script src="js/datatables/dataTables.scroller.min.js"></script>
         <!--table script-->
         <script type="text/javascript">
-     $(document).ready(function() {
-         $('#datatable').dataTable();
-         $('#datatable-keytable').DataTable({
-             keys: true
-         });
-         $('#datatable-responsive').DataTable();
-         $('#datatable-scroller').DataTable({
-             ajax: "js/datatables/json/scroller-demo.json",
-             deferRender: true,
-             scrollY: 380,
-             scrollCollapse: true,
-             scroller: true
-         });
-         var table = $('#datatable-fixed-header').DataTable({
-             fixedHeader: true
-         });
-     });
-     //TableManageButtons.init();
+            $(document).ready(function() {
+                $('#datatable').dataTable();
+                $('#datatable-keytable').DataTable({
+                    keys: true
+                });
+                $('#datatable-responsive').DataTable();
+                $('#datatable-scroller').DataTable({
+                    ajax: "js/datatables/json/scroller-demo.json",
+                    deferRender: true,
+                    scrollY: 380,
+                    scrollCollapse: true,
+                    scroller: true
+                });
+                var table = $('#datatable-fixed-header').DataTable({
+                    fixedHeader: true
+                });
+            });
+            //TableManageButtons.init();
         </script>
         <!--table script ends-->
     </body>
