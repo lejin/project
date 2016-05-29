@@ -226,61 +226,12 @@ WHERE assi.Course_ID=? ORDER BY assi.End_Date ASC";
 
 
                 <!-- footer content -->
-                <?php include './admin_footer.php'; ?>
+                <?php include './student_footer.php'; ?>
                 <!-- /footer content -->
             </div>
         </div>
-        <!-- edit modal -->
-        <div class="modal fade bs-example-modal-sm" tabindex="-1" id="edit_modal" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
+       
 
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel2">Enter progress</h4>
-                    </div>
-                    <form action="student_controller_update_assignment.php" method="post">
-                        <div class="modal-body">
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <div class="col-md-6">  
-                                            <label for="time">Total progress in hours </label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="text" id="edit_name" name="time" required="required" placeholder="Example 1.5" class="form-control">
-                                            <input type="hidden" id='assignment_id' name='assignment_id'>
-                                            <input type="hidden" id='user_id' name='user_id'>
-                                        </div>
-                                    </div>
-                                    <br/>
-                                    <br/>
-
-                                </div>
-                            </div>
-                        </div>
-                        <input id="edit_id" type="hidden" name="id"> 
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- /modals -->
-        <div id="custom_notifications" class="custom-notifications dsp_none">
-            <ul class="list-unstyled notifications clearfix" data-tabbed_notifications="notif-group">
-            </ul>
-            <div class="clearfix"></div>
-            <div id="notif-group" class="tabbed_notifications"></div>
-        </div>
-        <form id="delete_form" action="admin_controller_delete_institute.php" method="post">
-            <input type="hidden" name="id" id="delete_id">
-        </form>
         <script src="js/bootstrap.min.js"></script>
 
         <!-- bootstrap progress js -->

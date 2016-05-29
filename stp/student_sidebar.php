@@ -34,10 +34,10 @@
                 </li>
                 <li><a href="student_assignment.php"><i class="fa fa-desktop"></i> Assignments</a>
                 </li>
-                <li><a href="#"><i class="fa fa-table"></i> Activities </a>
+                <li><a href="student_graph1.php"><i class="fa fa-table"></i> Chart 1 </a>
              
                 </li>
-                <li><a href="#"><i class="fa fa-bar-chart-o"></i> Profile </a></li>
+                <li><a href="student_profile.php"><i class="fa fa-bar-chart-o"></i> Profile </a></li>
               </ul>
             </div>
           </div>

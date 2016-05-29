@@ -34,12 +34,12 @@ if(isset($_POST['username']))
                         }
                         else
                         {                    
-                            header("location:login.php");
+                            header("location:login.php?user_permission=true");
                         }
 		}
 		else
 		{                    
-                    header("location:login.php");
+                    header("location:login.php?invalid_login=true");
 		}
 
 }

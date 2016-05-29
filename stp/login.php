@@ -50,10 +50,42 @@ $institute_query="select * from tbl_institute";
     <div id="wrapper">
       <div id="login" class="animate form">
         <section class="login_content">
-           
+            
             <form action="controller_login.php" method="post">
             <h1>Login To Continue</h1>
- 
+            <?php
+            if(isset($_GET['invalid_login']))
+            {
+            ?>
+                 <label  class="text-danger">Login Failed</label>
+            <?php 
+            }
+            else if(isset($_GET['user_permission']))
+            {
+            ?>
+                   <label  class="text-warning">User not approved</label>
+            <?php 
+            }
+            else if(isset($_GET['user_exist']))
+            {
+            ?>
+                   <label  class="text-danger">User already exists</label>
+            <?php 
+           }
+            else if(isset($_GET['register']))
+            {
+            ?>
+                   <label  class="text-success">User registered successfully</label>
+            <?php 
+            }
+             else if(isset($_GET['error']))
+            {
+            ?>
+                   <label  class="text-danger">Oops something went wrong !!</label>
+            <?php 
+            }
+            ?>
+           
             <div>
                 <input type="text" class="form-control" placeholder="Username" name="username" required="" />
             </div>
@@ -138,15 +170,20 @@ $institute_query="select * from tbl_institute";
 			</select>
             </div>
 			<br/>
-                        <div>
-                            <input type="text" class="form-control" placeholder="Username" name="username" required="" />
+                       
+            
+                        
+            <div>
+               
+                <input id="username" type="text" class="form-control" placeholder="Username" name="username" required="" />
             </div>
             <div>
                 <input type="password" class="form-control" placeholder="Password" name="password" required="" />
             </div>
             <div>
-                <button class="btn btn-default alignright">Submit</button>
+                <button id="submit_button"  class="btn btn-default alignright">Submit</button>
             </div>
+                         <label id="username_label" class="text-danger" style="visibility: hidden;">Username already exists</label>
             <div class="clearfix"></div>
             <div class="separator">
 
@@ -168,7 +205,25 @@ $institute_query="select * from tbl_institute";
       </div>
     </div>
   </div>
-
+    <script>
+   
+    $('#username').keyup(
+            function(){
+                username=$('#username').val();
+               $.getJSON('controler_login_username_check.php?username='+username,function (data){
+                   if(data.count>0){
+                       
+                       $('#username_label').attr('style','visibility: show');
+                        $('#submit_button').prop('disabled',true);
+                   }
+                   else{
+                       $('#username_label').attr('style','visibility: hidden');
+                        $('#submit_button').prop('disabled',false);
+                   }
+               })
+            }
+            );
+    </script>
 </body>
 
 </html>

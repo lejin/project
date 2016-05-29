@@ -10,6 +10,17 @@ if(isset($_POST['user_type']))
 	$username=$_POST['username'];
 	$password=$_POST['password'];
         $email=$_POST['email'];
+        
+        
+       $query = mysqli_query($con,"select count(*) as count from tbl_user where tbl_user.User_Name='$username'")
+       or die(mysqli_error());
+	$row=mysqli_fetch_array($query);
+	if($row['count']>0){            
+            header("location:login.php?user_exist=true");
+            exit();
+        }
+        
+        
         $approval_status=0;
         if($user_type==3)
         {
@@ -26,11 +37,11 @@ if(isset($_POST['user_type']))
 			$query = mysqli_query($con,$institute_query) or die(mysqli_error());
                         //$_SESSION['username']=$row['username'];
 			//$_SESSION['user_id']=$row['user_id'];
-			header("location:index.html");
+			header("location:login.php?register=true");
 		}
 		else
 		{
-                        header("location:login.php");
+                        header("location:login.php?error=true");
 		}
 
 }
