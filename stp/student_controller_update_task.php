@@ -30,7 +30,7 @@ $stmt->free_result();
 $insert_query="INSERT INTO tbl_student_task(tbl_student_task.student_id,tbl_student_task.task_id,tbl_student_task.completed_hours) VALUES(?,?,?)";
 if(($stmt=$connection->prepare($insert_query)))
 {
-    $stmt->bind_param('iii',$user_id,$task_id,$hours);
+    $stmt->bind_param('iis',$user_id,$task_id,$hours);
     $stmt->execute();
     $connection->error;
 }
