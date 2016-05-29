@@ -71,8 +71,11 @@ if ($connection2->errno) {
         <?php
 //create data for category section text of graph starts
         $graph_categories = '[';
-        $pending_work = '[';
-        $completed_work = '[';
+        $cumilative_work = '[';
+        $actual_work = '[';
+        $preferred_work = '[';
+        $cw = 0;
+        $aw = 0;
         $flag = 0;
         $user_id = $_SESSION['user_id'];
         $course_query = "SELECT uc.Course_ID,course.Course_Name
@@ -97,17 +100,23 @@ WHERE assi.Course_ID=? ORDER BY assi.End_Date ASC";
                 if (($stmt_task = $connection->prepare($task_query))) {
                     $stmt_task->bind_param('ii', $user_id, $cid);
                     $stmt_task->execute();
-                    $stmt_task->bind_result($assignment_id, $task_name, $task_desc, $task_due_date, $task_start_date, $task_pref_hours, $task_weightage, $completed_hours);
+                    $stmt_task->bind_result($assignment_id, $assign_name, $task_desc, $assign_due_date, $assign_start_date, $assign_pref_hours, $assign_weightage, $completed_hours);
                     while ($stmt_task->fetch()) {
                         if ($flag == 0) {
-                            $graph_categories.="'" . $course_name . '/' . $task_name . '<br\>(' . $task_due_date . ')' . "'";
-                            $pending_work.='-' . ($task_pref_hours - $completed_hours);
-                            $completed_work.=$completed_hours;
+                            $graph_categories.="'" . $course_name . '/' . $assign_name . '<br\>(' . $assign_due_date . ')' . "'";
+                            $cumilative_work.=$assign_pref_hours;
+                            $cw = $cw + $assign_pref_hours;
+                            $actual_work.=$completed_hours;
+                            $aw = $aw + $completed_hours;
+                            $preferred_work.=$assign_pref_hours;
                             $flag = 1;
                         } else {
-                            $graph_categories.=",'" . $course_name . '/' . $task_name . '<br\>(' . $task_due_date . ')' . "'";
-                            $pending_work.=",-" . ($task_pref_hours - $completed_hours);
-                            $completed_work.=',' . $completed_hours;
+                            $cw = $cw + $assign_pref_hours;
+                            $aw = $aw + $completed_hours;
+                            $graph_categories.=",'" . $course_name . '/' . $assign_name . '<br\>(' . $assign_due_date . ')' . "'";
+                            $cumilative_work.="," . $cw;
+                            $actual_work.=',' . $aw;
+                            $preferred_work.=',' . $assign_pref_hours;
                         }
 //                                                
                     }
@@ -117,80 +126,121 @@ WHERE assi.Course_ID=? ORDER BY assi.End_Date ASC";
         }
 //        closing bracket
         $graph_categories.=']';
-        $pending_work.=']';
-        $completed_work.=']';
+        $cumilative_work.=']';
+        $actual_work.=']';
+        $preferred_work.=']';
 //create data for category section text of graph ends
         ?>
 
 
         <script type="text/javascript">
             $(function() {
-                // Age categories
-//                var categories = ['IT1000 - Information Security/Assignment 1', 'IT1000 - Information Security/Assignment 2', 'IT1000 - Information Security/Assignment 3', 'IT6269 - ITIL2/assignment 15', 'IT6269 - ITIL2/assignment 1', 'IT6269 - ITIL2/assignment 10'];
-                var categories = <?php echo $graph_categories; ?>;
-                $(document).ready(function() {
-                    $('#container').highcharts({
-                        chart: {
-                            //type: 'bar'
-                            type: 'column'
-                        },
-                        title: {
-                            text: 'Assignments'
-                        },
-                        subtitle: {
-                            text: 'Completed work to the top and Pending work to the bottom'
-                        },
-                        xAxis: [{
-                                categories: categories,
-                                reversed: false, title: {
-                                    text: '(Course/Assignment)'
-                                },
-                                labels: {
-                                    step: 1
+                $('#container').highcharts({
+                    chart: {
+                        zoomType: 'xy'
+                    },
+                    title: {
+                        text: ''
+//            text: 'Average Monthly Weather Data for Tokyo'
+                    },
+                    subtitle: {
+//            text: 'Source: WorldClimate.com'
+                    },
+                    xAxis: [{
+                            categories: <?php echo $graph_categories; ?>,
+                            crosshair: true
+                        }],
+                    yAxis: [{// Primary yAxis
+                            labels: {
+                                format: '{value} hrs',
+                                style: {
+                                    color: Highcharts.getOptions().colors[2]
                                 }
-                            }, {// mirror axis on right side
-                                opposite: true,
-                                reversed: false,
-                                categories: categories,
-                                linkedTo: 0,
-                                labels: {
-                                    step: 1
-                                }
-                            }],
-                        yAxis: {
+                            },
                             title: {
-                                text: null
+                                text: '',
+                                style: {
+                                    color: Highcharts.getOptions().colors[2]
+                                }
+                            },
+            opposite: true
+
+                        }, {// Tertiary yAxis
+                            gridLineWidth: 0,
+                            title: {
+                                text: 'Hours',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
                             },
                             labels: {
-                                formatter: function() {
-                                    return Math.abs(this.value) + 'hrs';
+                                format: '{value} hrs',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
                                 }
+                            },
+                            opposite: false
+                        }],
+                    tooltip: {
+                        shared: true
+                    },
+                    legend: {
+                        layout: 'vertical',
+                        align: 'left',
+                        x: 80,
+                        verticalAlign: 'top',
+                        y: 55,
+                        floating: true,
+                        backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+                    },
+                    series: [{
+                            name: 'Cumilative work hours',
+                            type: 'area',
+                            yAxis: 1,
+                            step: 'center',
+                            groupPadding: 0,
+                            pointPadding: 0,
+                            borderWidth: 0,
+                            data: <?php echo $cumilative_work; ?>,
+                            tooltip: {
+                                valueSuffix: ' hrs'
                             }
-                        },
-                        plotOptions: {
-                            series: {
-                                stacking: 'normal'
-                            }
-                        },
-                        tooltip: {
-                            formatter: function() {
-                                return '<b>' + this.series.name + ', under ' + this.point.category + '</b><br/>' +
-                                        'Hour(s): ' + Highcharts.numberFormat(Math.abs(this.point.y), 0);
-                            }
-                        },
-                        series: [{
-                                name: 'Pending work',
-                                data: <?php echo $pending_work; ?>
-//                                data: [-20, -20]
 
-                            }, {
-                                name: 'Completed work',
-                                data: <?php echo $completed_work; ?>
-//                                data: [10, 5,]
-                            }]
-                    });
+                        },
+                        {
+                            name: 'Preferred Work-hours',
+                            type: 'column',
+                            yAxis: 1,
+                            data: <?php echo $preferred_work; ?>,
+                            tooltip: {
+                                valueSuffix: ' hrs'
+                            }
+
+                        },
+                        {
+                            name: 'Actual work-load',
+                            type: 'spline',
+                            yAxis: 1,
+                            data: <?php echo $actual_work; ?>,
+                            marker: {
+                                enabled: true
+                            },
+                            dashStyle: 'shortdot',
+                            tooltip: {
+                                valueSuffix: ' hrs'
+                            }
+
+                        }, {
+                            name: 'Cumilative work load',
+                            type: 'spline',
+                            yAxis: 1,
+                            data: <?php echo $cumilative_work; ?>,
+                            tooltip: {
+                                valueSuffix: ' hrs'
+                            }
+                        }
+                    ]
                 });
-
             });
         </script>
         <!--graph script ends-->
@@ -230,7 +280,7 @@ WHERE assi.Course_ID=? ORDER BY assi.End_Date ASC";
                 <!-- /footer content -->
             </div>
         </div>
-       
+
 
         <script src="js/bootstrap.min.js"></script>
 
