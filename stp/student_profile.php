@@ -2,7 +2,7 @@
 include './student_session_check.php';
 include './config.php';
 $user_id=$_SESSION['user_id'];
-$query = mysqli_query($con,"select tbl_user.F_Name,tbl_user.L_Name,tbl_user.Recovery_Mail,tbl_user.Password,tbl_user_program.user_program_id from tbl_user left join tbl_user_program on tbl_user.User_ID=tbl_user_program.user_id where tbl_user.User_ID ='$user_id'")
+$query = mysqli_query($con,"select tbl_user.F_Name,tbl_user.L_Name,tbl_user.Recovery_Mail,tbl_user.Password,tbl_user_program.program_id from tbl_user left join tbl_user_program on tbl_user.User_ID=tbl_user_program.user_id where tbl_user.User_ID ='$user_id'")
  or die(mysqli_error());
 $row=mysqli_fetch_array($query);
 	   
@@ -144,7 +144,7 @@ $row=mysqli_fetch_array($query);
                                $results2 = $con->query($course_query);
                                while($row2 = $results2->fetch_assoc()) {
                               ?>
-                              <option <?php if($row2['Program_ID']==$row['user_program_id']){echo "selected";} ?> value="<?php echo $row2['Program_ID']; ?>"><?php echo $row2['program_Name']; ?> <?php echo"&nbsp;&nbsp;&nbsp;&nbsp;(". $row2['Institute_Name'].")"; ?></option>
+                              <option <?php if($row2['Program_ID']==$row['program_id']){echo "selected";} ?> value="<?php echo $row2['Program_ID']; ?>"><?php echo $row2['program_Name']; ?> <?php echo"&nbsp;&nbsp;&nbsp;&nbsp;(". $row2['Institute_Name'].")"; ?></option>
                               <?php
                              
                                }
