@@ -134,6 +134,7 @@ WHERE task.course_id=?";
                                                     <td><?php echo $task_due_date; ?></td>
                                                     <td>
                                                         <a class="btn btn-success" onclick="$('#user_id').val(<?php echo $user_id; ?>);
+                                                                                $('#completed_hour').val(<?php echo $completed_hours; ?>);
                                                                                 $('#task_id').val(<?php echo $task_id; ?>);
                                                                                 $('#edit_modal').modal('show');">
                                                             <i class="fa fa-pencil fa-lg"></i> Add progress</a>
@@ -194,6 +195,7 @@ WHERE task.course_id=?";
                                             <input type="text" id="edit_name" name="time" required="required" placeholder="Example 1.5" class="form-control">
                                             <input type="hidden" id='task_id' name='task_id'>
                                             <input type="hidden" id='user_id' name='user_id'>
+                                            <input type="hidden" id="completed_hour" name="completed_hour">
                                         </div>
                                     </div>
                                     <br/>

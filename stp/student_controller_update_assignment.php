@@ -13,6 +13,8 @@ if ($connection->errno) {
 $hours = $_POST['time'];
 $user_id=$_POST['user_id'];
 $assignment_id=$_POST['assignment_id'];
+$completed_hour=$_POST['completed_hour'];
+$hours=$hours+$completed_hour;
 //delete row
 $delete_query="DELETE from tbl_student_assignment where tbl_student_assignment.assignment_id=? and tbl_student_assignment.student_id=?";
 if(($stmt=$connection->prepare($delete_query)))

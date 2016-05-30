@@ -134,6 +134,7 @@ WHERE assi.Course_ID=?";
                                                     <td>
                                                         <a class="btn btn-success" onclick="$('#user_id').val(<?php echo $user_id; ?>);
                                                                                 $('#assignment_id').val(<?php echo $assignment_id; ?>);
+                                                                                $('#completed_hour').val(<?php echo $completed_hours; ?>);
                                                                                 $('#edit_modal').modal('show');">
                                                             <i class="fa fa-pencil fa-lg"></i> Add progress</a>
                                                     </td>
@@ -193,6 +194,7 @@ WHERE assi.Course_ID=?";
                                             <input type="text" id="edit_name" name="time" required="required" placeholder="Example 1.5" class="form-control">
                                             <input type="hidden" id='assignment_id' name='assignment_id'>
                                             <input type="hidden" id='user_id' name='user_id'>
+                                            <input type="hidden" id='completed_hour' name='completed_hour'>
                                         </div>
                                     </div>
                                     <br/>
