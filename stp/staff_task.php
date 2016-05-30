@@ -261,7 +261,7 @@ $course_id=$row['Course_ID'];
                       </div>
                       <div class="modal-footer">
                           <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
-                          <button type="submit" class="btn btn-primary">Save changes</button>
+                          <button type="submit" class="btn btn-primary">Release Task</button>
                       </div>
                       </form>
                     </div>
@@ -350,7 +350,7 @@ $course_id=$row['Course_ID'];
                       <input id="edit_id" type="hidden" name="id"> 
                       <div class="modal-footer">
                           <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
-                          <button type="submit" class="btn btn-primary">Save changes</button>
+                          <button type="submit" class="btn btn-primary">Release Task</button>
                       </div>
                       </form>
                     </div>
