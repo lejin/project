@@ -2,7 +2,7 @@
 include './student_session_check.php';
 include './config.php';
 $user_id=$_SESSION['user_id'];
-$query = mysqli_query($con,"select tbl_user.F_Name,tbl_user.L_Name,tbl_user.Recovery_Mail,tbl_user.Password,tbl_user_course.Course_ID from tbl_user left join tbl_user_course on tbl_user.User_ID=tbl_user_course.User_ID where tbl_user.User_ID = '$user_id'")
+$query = mysqli_query($con,"select tbl_user.F_Name,tbl_user.L_Name,tbl_user.Recovery_Mail,tbl_user.Password,tbl_user_program.user_program_id from tbl_user left join tbl_user_program on tbl_user.User_ID=tbl_user_program.user_id where tbl_user.User_ID ='$user_id'")
  or die(mysqli_error());
 $row=mysqli_fetch_array($query);
 	   
@@ -83,7 +83,7 @@ $row=mysqli_fetch_array($query);
             <div class="col-md-offset-1 col-md-9 col-sm-9 col-xs-9" >
               <div class="x_panel">
                 <div class="x_title">
-                  <h2>Staff Profile <small>update profile</small></h2>
+                  <h2>Student Profile <small>update profile</small></h2>
                   <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>
@@ -112,7 +112,7 @@ $row=mysqli_fetch_array($query);
                       <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last_name">Last Name
                       </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="text"  id="last_name" name="last_name" value="<?php echo $row['L_Name']; ?>" required="required" class="form-control col-md-7 col-xs-12">
+                        <input type="text" id="last_name" name="last_name" value="<?php echo $row['L_Name']; ?>" required="required" class="form-control col-md-7 col-xs-12">
                     </div>
                     </div>
                       <br/>
@@ -120,7 +120,7 @@ $row=mysqli_fetch_array($query);
                     <div class="form-group">
                       <label for="email" class="control-label col-md-3 col-sm-3 col-xs-12">Email</label>
                       <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="email" required="required" class="form-control col-md-7 col-xs-12" value="<?php echo $row['Recovery_Mail']; ?>" type="email" name="email">
+                        <input id="email" class="form-control col-md-7 col-xs-12" value="<?php echo $row['Recovery_Mail']; ?>" type="email" name="email">
                       </div>
                     </div>   
                       <br/>
@@ -128,10 +128,31 @@ $row=mysqli_fetch_array($query);
                     <div class="form-group">
                       <label for="password" class="control-label col-md-3 col-sm-3 col-xs-12">Password</label>
                       <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="password" required="required" class="form-control col-md-7 col-xs-12" value="<?php echo $row['Password']; ?>" type="password" name="password">
+                        <input id="password" class="form-control col-md-7 col-xs-12" value="<?php echo $row['Password']; ?>" type="password" name="password">
                       </div>
                     </div>   
-    
+                      <br/>
+                      <br/>
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">Course 
+                      </label>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                          <select name="course" class="form-control col-md-7 col-xs-12">
+                              <option value="">please select</option>
+                              <?php 
+                               $course_query="SELECT pro.Program_ID,pro.program_Name,ins.Institute_Name FROM tbl_programs pro INNER JOIN tbl_institute ins ON ins.Institute_ID=pro.Institute_ID";
+                               $results2 = $con->query($course_query);
+                               while($row2 = $results2->fetch_assoc()) {
+                              ?>
+                              <option <?php if($row2['Program_ID']==$row['user_program_id']){echo "selected";} ?> value="<?php echo $row2['Program_ID']; ?>"><?php echo $row2['program_Name']; ?> <?php echo"&nbsp;&nbsp;&nbsp;&nbsp;(". $row2['Institute_Name'].")"; ?></option>
+                              <?php
+                             
+                               }
+                                $results2->free();
+                              ?>
+                          </select>
+                      </div>
+                    </div>
                         <br/>
                       <br/>
                     <div class="ln_solid"></div>
@@ -166,7 +187,7 @@ $row=mysqli_fetch_array($query);
       <!-- /page content -->
 
       <!-- footer content -->
-      <?php include './staff_footer.php'; ?>
+      <?php include './student_footer.php'; ?>
       <!-- /footer content -->
     </div>
   </div>

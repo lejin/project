@@ -1,6 +1,7 @@
 <?php
 include './student_session_check.php';
 require_once './config.php';
+include './student_profile_complete_check.php';
 //mysqli connection
 $connection = new mysqli();
 $connection->connect($mysqli_host, $mysqli_user, $mysqli_password, $mysqli_database);
