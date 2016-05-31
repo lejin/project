@@ -38,6 +38,7 @@
              
                 </li>
                 <li><a href="admin_course.php"><i class="fa fa-bar-chart-o"></i> Course </a></li>
+                <li><a href="admin_staff.php"><i class="fa fa-group"></i> Staff </a></li>
               </ul>
             </div>
           </div>
