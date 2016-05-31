@@ -94,7 +94,7 @@ $institute_query="select * from tbl_institute";
             </div>
             <div>
                 <button class="btn btn-default alignright">Log in</button>
-              <a class="reset_pass" href="#">Lost your password?</a>
+             
             </div>
             <div class="clearfix"></div>
             <div class="separator">
