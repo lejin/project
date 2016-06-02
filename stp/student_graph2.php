@@ -226,6 +226,7 @@ WHERE assi.Course_ID=? ORDER BY assi.End_Date ASC";
                                 enabled: true
                             },
                             dashStyle: 'shortdot',
+                            color:Highcharts.getOptions().colors[5],
                             tooltip: {
                                 valueSuffix: ' hrs'
                             }
@@ -235,6 +236,7 @@ WHERE assi.Course_ID=? ORDER BY assi.End_Date ASC";
                             type: 'spline',
                             yAxis: 1,
                             data: <?php echo $cumilative_work; ?>,
+                            color:Highcharts.getOptions().colors[3],
                             tooltip: {
                                 valueSuffix: ' hrs'
                             }
