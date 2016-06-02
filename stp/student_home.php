@@ -2,6 +2,12 @@
 include './student_session_check.php';
 include './config.php';
 $user_id=$_SESSION['user_id'];
+$user_course_query="select tbl_user_course.Course_ID from tbl_user_course where tbl_user_course.User_ID=$user_id";
+
+	$result = mysqli_query($con,$user_course_query) or die(mysqli_error());
+        $row = mysqli_fetch_assoc($result);
+        $course_id=$row['Course_ID']
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -119,7 +125,7 @@ $user_id=$_SESSION['user_id'];
                     </thead>
                     <tbody>
                                  <?php
-                   $assignment_query="select tbl_task.Task_Name,tbl_task.Task_start_date,tbl_task.Task_due_date,tbl_task.preferred_hour,tbl_student_task.completed_hours from tbl_student_task inner join tbl_task on tbl_task.Task_ID=tbl_student_task.task_id where tbl_student_task.student_id='$user_id'";
+                   $assignment_query="select tbl_task.Task_Name,tbl_task.Task_start_date,tbl_task.Task_due_date,tbl_task.preferred_hour,tbl_student_task.completed_hours from tbl_student_task inner join tbl_task on tbl_task.Task_ID=tbl_student_task.task_id where tbl_student_task.student_id='$user_id' and tbl_task.course_id='$course_id'";
                    $results = $con->query($assignment_query);
                    $i=1; 
                      
@@ -216,7 +222,7 @@ $user_id=$_SESSION['user_id'];
                     </thead>
                     <tbody>
                                  <?php
-                   $assignment_query="select tbl_assignment.Assignment_Name,tbl_assignment.Start_Date,tbl_assignment.End_Date,tbl_assignment.preffereed_Hours,tbl_student_assignment.completed_hours from tbl_student_assignment inner join tbl_assignment on tbl_assignment.Assignment_ID=tbl_student_assignment.assignment_id where tbl_student_assignment.student_id='$user_id'";
+                   $assignment_query="select tbl_assignment.Assignment_Name,tbl_assignment.Start_Date,tbl_assignment.End_Date,tbl_assignment.preffereed_Hours,tbl_student_assignment.completed_hours from tbl_student_assignment inner join tbl_assignment on tbl_assignment.Assignment_ID=tbl_student_assignment.assignment_id where tbl_student_assignment.student_id='$user_id' and tbl_assignment.course_id='$course_id'";
                    $results = $con->query($assignment_query);
                    $i=1; 
                      
