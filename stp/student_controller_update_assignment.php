@@ -14,7 +14,15 @@ $hours = $_POST['time'];
 $user_id=$_POST['user_id'];
 $assignment_id=$_POST['assignment_id'];
 $completed_hour=$_POST['completed_hour'];
+$completed_hours=$hours;
+$preferred_hour=$_POST['preferred_hour'];
 $hours=$hours+$completed_hour;
+//check if competed hour grater than preffered hour
+if($hours>=$preferred_hour){
+    header('Location: student_assignment.php?hour=false');
+    exit();
+}
+
 //delete row
 $delete_query="DELETE from tbl_student_assignment where tbl_student_assignment.assignment_id=? and tbl_student_assignment.student_id=?";
 if(($stmt=$connection->prepare($delete_query)))
