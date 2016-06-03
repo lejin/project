@@ -2,7 +2,7 @@
 include './student_session_check.php';
 include './config.php';
 $user_id=$_SESSION['user_id'];
-$query = mysqli_query($con,"select tbl_user.F_Name,tbl_user.L_Name,tbl_user.Recovery_Mail,tbl_user.Password,tbl_user_program.program_id from tbl_user left join tbl_user_program on tbl_user.User_ID=tbl_user_program.user_id where tbl_user.User_ID ='$user_id'")
+$query = mysqli_query($con,"select tbl_user.F_Name,tbl_user.L_Name,tbl_user.Recovery_Mail,tbl_user.Password,tbl_user_course.Course_ID from tbl_user left join tbl_user_course on tbl_user.User_ID=tbl_user_course.User_ID where tbl_user.User_ID = '$user_id'")
  or die(mysqli_error());
 $row=mysqli_fetch_array($query);
 	   
@@ -140,11 +140,11 @@ $row=mysqli_fetch_array($query);
                           <select name="course" class="form-control col-md-7 col-xs-12">
                               <option value="">please select</option>
                               <?php 
-                               $course_query="SELECT pro.Program_ID,pro.program_Name,ins.Institute_Name FROM tbl_programs pro INNER JOIN tbl_institute ins ON ins.Institute_ID=pro.Institute_ID";
+                               $course_query="select tbl_course.Course_ID,tbl_course.Course_Name,tbl_course.Course_Dsecription,tbl_course.Percentage_Of_Fulltime,tbl_programs.Program_ID,tbl_programs.program_Name from tbl_course inner join tbl_course_program on tbl_course_program.Course_ID=tbl_course.Course_ID inner join tbl_programs on tbl_course_program.Program_ID=tbl_programs.Program_ID";
                                $results2 = $con->query($course_query);
                                while($row2 = $results2->fetch_assoc()) {
                               ?>
-                              <option <?php if($row2['Program_ID']==$row['program_id']){echo "selected";} ?> value="<?php echo $row2['Program_ID']; ?>"><?php echo $row2['program_Name']; ?> <?php echo"&nbsp;&nbsp;&nbsp;&nbsp;(". $row2['Institute_Name'].")"; ?></option>
+                              <option  <?php if($row2['Course_ID']==$row['Course_ID']){echo "selected";} ?> value="<?php echo $row2['Course_ID']; ?>"><?php echo $row2['Course_Name']; ?> <?php echo"&nbsp;&nbsp;&nbsp;&nbsp;(". $row2['program_Name'].")"; ?></option>
                               <?php
                              
                                }
@@ -158,6 +158,7 @@ $row=mysqli_fetch_array($query);
                     <div class="ln_solid"></div>
                     <div class="form-group">
                       <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-4">
+                        
                           <input type="hidden" name="id" value="<?php echo $user_id; ?>">
                         <button type="reset" class="btn btn-primary">Cancel</button>
                         <button type="submit" class="btn btn-success">Submit</button>
