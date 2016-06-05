@@ -71,7 +71,7 @@ $staff_student_quer="select tbl_user.F_Name  from tbl_user inner join tbl_user_c
         <div class="" style="min-height: 100% !important;">
           <div class="page-title">
             <div class="title_left">
-              <h3>Institute <small>List </small></h3>
+              <h3>Students <small>List </small></h3>
             </div>
 
    
@@ -86,15 +86,7 @@ $staff_student_quer="select tbl_user.F_Name  from tbl_user inner join tbl_user_c
                   <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                      <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Settings 1</a>
-                        </li>
-                        <li><a href="#">Settings 2</a>
-                        </li>
-                      </ul>
-                    </li>
+                 
                     <li><a class="close-link"><i class="fa fa-close"></i></a>
                     </li>
                   </ul>
@@ -102,7 +94,7 @@ $staff_student_quer="select tbl_user.F_Name  from tbl_user inner join tbl_user_c
                 </div>
                 <div class="x_content">
 
-                  <p>List Of Institutes</p>
+                  <p>List Of Students</p>
                   <?php
                    //$institute_query="select * from tbl_institute";
                    $results = $con->query($student_query);

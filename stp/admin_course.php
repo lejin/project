@@ -110,7 +110,7 @@ $programs_dropdown_query="select Program_ID,program_Name,Institute_Name from tbl
                         <th>% of fulltime</th>    
                         <th>Program</th>   
                         <th>Institute</th>   
-                        <th style="width: 15%">#Edit</th>
+                        <th style="width: 15%">Edit</th>
                       </tr>
                     </thead>
                     <tbody>

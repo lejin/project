@@ -107,7 +107,7 @@ include './admin_session_check.php';
                         <th >Name</th>
 			<th >Email</th>
                         <th>Institute</th>                        
-                        <th >#Edit</th>
+                        <th >Edit</th>
                       </tr>
                     </thead>
                     <tbody>

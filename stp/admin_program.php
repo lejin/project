@@ -107,7 +107,7 @@ $institute_dropdown_query="select * from tbl_institute";
                         <th style="width: 8%">Name</th>
 			<th style="width: 20%">Description</th>
                         <th>Institute</th>                        
-                        <th style="width: 15%">#Edit</th>
+                        <th style="width: 15%">Edit</th>
                       </tr>
                     </thead>
                     <tbody>

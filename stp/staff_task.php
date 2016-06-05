@@ -74,7 +74,7 @@ $course_id=$row['Course_ID'];
         <div class="" style="min-height: 100% !important;">
           <div class="page-title">
             <div class="title_left">
-              <h3>Semester <small>List </small></h3>
+              <h3>Task <small>List </small></h3>
             </div>
 
    
@@ -115,7 +115,7 @@ $course_id=$row['Course_ID'];
                         <th>End Date</th> 
                         <th>Weightage</th>  
                         <th>prefered hours</th>  
-                        <th>#Edit</th>
+                        <th>Edit</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -399,7 +399,14 @@ $course_id=$row['Course_ID'];
           $("#delete_id").val(id);
           $("#delete_form").submit();
       }
-  $("#program_table").DataTable();
+  $("#program_table").DataTable(
+    {
+    "aoColumnDefs": [{
+      "bSortable": false, 
+      "aTargets": [7]
+    }]
+  }       
+    );
   
   function getProgramDetail(id){
        $.getJSON('staff_controller_edit_task.php?id='+id, function(jd) {

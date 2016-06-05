@@ -110,7 +110,7 @@ $course_dropdown_query="select * from tbl_course";
 			<th >Start Date</th>
                         <th>End Date</th>  
                         <th>Number Of Weeks</th>  
-                        <th style="width: 15%">#Edit</th>
+                        <th style="width: 15%">Edit</th>
                       </tr>
                     </thead>
                     <tbody>

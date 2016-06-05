@@ -106,7 +106,7 @@ include './config.php';
 			<th style="width: 20%">Address</th>
                         <th>Phone number</th>
                         <th style="width: 20%">email</th>
-                        <th style="width: 15%">#Edit</th>
+                        <th style="width: 15%">Edit</th>
                       </tr>
                     </thead>
                     <tbody>
