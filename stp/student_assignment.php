@@ -269,7 +269,14 @@ WHERE assi.Course_ID=?";
         <!--table script-->
         <script type="text/javascript">
                                                             $(document).ready(function() {
-                                                                $('#datatable').dataTable();
+                                                                $('#datatable').dataTable(
+                                   {
+    "aoColumnDefs": [{
+      "bSortable": false, 
+      "aTargets": [7]
+    }]
+  }                                                          
+                );
                                                                 $('#datatable-keytable').DataTable({
                                                                     keys: true
                                                                 });

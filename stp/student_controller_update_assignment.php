@@ -18,7 +18,7 @@ $completed_hours=$hours;
 $preferred_hour=$_POST['preferred_hour'];
 $hours=$hours+$completed_hour;
 //check if competed hour grater than preffered hour
-if($hours>=$preferred_hour){
+if($hours>$preferred_hour){
     header('Location: student_assignment.php?hour=false');
     exit();
 }

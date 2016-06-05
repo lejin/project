@@ -91,15 +91,7 @@ $user_course_query="select tbl_user_course.Course_ID from tbl_user_course where 
                   <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                      <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Settings 1</a>
-                        </li>
-                        <li><a href="#">Settings 2</a>
-                        </li>
-                      </ul>
-                    </li>
+             
                     <li><a class="close-link"><i class="fa fa-close"></i></a>
                     </li>
                   </ul>
@@ -157,7 +149,7 @@ $user_course_query="select tbl_user_course.Course_ID from tbl_user_course where 
                           <div class="progress progress_sm">
                               <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="<?php echo "$progress"; ?>"></div>
                           </div>
-                          <small><?php echo "$progress"; ?> Complete</small>
+                          <small><?php if($progress<=100){ echo "$progress";}else{echo "100";} ?> % Complete</small>
                         </td>
                         <td>
                             <?php if($progress<=100){ ?>
@@ -193,10 +185,7 @@ $user_course_query="select tbl_user_course.Course_ID from tbl_user_course where 
                   <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
                    
-                    </li>
                     <li><a class="close-link"><i class="fa fa-close"></i></a>
                     </li>
                   </ul>
@@ -254,7 +243,7 @@ $user_course_query="select tbl_user_course.Course_ID from tbl_user_course where 
                           <div class="progress progress_sm">
                               <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="<?php echo "$progress"; ?>"></div>
                           </div>
-                          <small><?php echo "$progress"; ?> Complete</small>
+                          <small><?php if($progress<=100){ echo "$progress";}else{echo "100";} ?> % Complete</small>
                         </td>
                         <td>
                             <?php if($progress<=100){ ?>
