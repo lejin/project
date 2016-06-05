@@ -85,15 +85,7 @@ $programs_dropdown_query="select Program_ID,program_Name,Institute_Name from tbl
                   <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                      <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Settings 1</a>
-                        </li>
-                        <li><a href="#">Settings 2</a>
-                        </li>
-                      </ul>
-                    </li>
+                
                     <li><a class="close-link"><i class="fa fa-close"></i></a>
                     </li>
                   </ul>
@@ -101,7 +93,7 @@ $programs_dropdown_query="select Program_ID,program_Name,Institute_Name from tbl
                 </div>
                 <div class="x_content">
 
-                  <p>List Of Institutes</p>
+                  <p>List Of Courses</p>
                   <?php
                    $course_query="select tbl_course.Course_ID,tbl_course.Course_Name,tbl_course.Course_Dsecription,tbl_course.Percentage_Of_Fulltime,tbl_programs.Program_ID,tbl_programs.program_Name,tbl_institute.Institute_Name from tbl_course inner join tbl_course_program on tbl_course_program.Course_ID=tbl_course.Course_ID inner join tbl_programs on tbl_course_program.Program_ID=tbl_programs.Program_ID inner join tbl_institute on tbl_institute.Institute_ID=tbl_programs.Institute_ID";
                    $results = $con->query($course_query);
@@ -213,7 +205,7 @@ $programs_dropdown_query="select Program_ID,program_Name,Institute_Name from tbl
                                         <label for="percentage">Percentage Of Fulltime </label>
                                     </div>
                                 <div class="col-md-6">
-                                    <input type="text" id="percentage" name="percentage" required="required" placeholder="percentage" class="form-control">
+                                    <input type="number" id="percentage" name="percentage" required="required" placeholder="percentage" class="form-control">
                                 </div>
                                 </div>
                                 <br/>
@@ -293,7 +285,7 @@ $programs_dropdown_query="select Program_ID,program_Name,Institute_Name from tbl
                                         <label for="percentage">Percentage Of Fulltime </label>
                                     </div>
                                 <div class="col-md-6">
-                                    <input type="text" id="edit_percentage" name="percentage" required="required" placeholder="percentage" class="form-control">
+                                    <input type="number" id="edit_percentage" name="percentage" required="required" placeholder="percentage" class="form-control">
                                 </div>
                                 </div>
                                 <br/>
@@ -376,7 +368,14 @@ $programs_dropdown_query="select Program_ID,program_Name,Institute_Name from tbl
           $("#delete_id").val(id);
           $("#delete_form").submit();
       }
-  $("#program_table").DataTable();
+  $("#program_table").DataTable(
+          {
+    "aoColumnDefs": [{
+      "bSortable": false, 
+      "aTargets": [6]
+    }]
+  }       
+    );
   
   function getProgramDetail(id){
        $.getJSON('admin_controller_edit_course.php?id='+id, function(jd) {

@@ -84,15 +84,7 @@ include './admin_session_check.php';
                   <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                      <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Settings 1</a>
-                        </li>
-                        <li><a href="#">Settings 2</a>
-                        </li>
-                      </ul>
-                    </li>
+                  
                     <li><a class="close-link"><i class="fa fa-close"></i></a>
                     </li>
                   </ul>
@@ -100,7 +92,7 @@ include './admin_session_check.php';
                 </div>
                 <div class="x_content">
 
-                  <p>List Of Institutes</p>
+                  <p>List Of Staffs</p>
                   <?php
                    $staff_query="select tbl_user.User_ID,tbl_user.F_Name,tbl_user.L_Name,tbl_user.Recovery_Mail,tbl_institute.Institute_Name from tbl_user inner join tbl_institute on tbl_institute.Institute_ID=tbl_user.Institute_ID where tbl_user.User_Type_ID=2";
                    $results = $con->query($staff_query);
@@ -242,7 +234,14 @@ include './admin_session_check.php';
         <script src="js/datatables/dataTables.scroller.min.js"></script>
   <script>
 
-  $("#program_table").DataTable();
+  $("#program_table").DataTable(
+            {
+    "aoColumnDefs": [{
+      "bSortable": false, 
+      "aTargets": [4]
+    }]
+  }      
+    );
   
   function getProgramDetail(id){       
                    $("#edit_id").val(id);      

@@ -84,15 +84,7 @@ $course_dropdown_query="select * from tbl_course";
                   <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                      <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Settings 1</a>
-                        </li>
-                        <li><a href="#">Settings 2</a>
-                        </li>
-                      </ul>
-                    </li>
+              
                     <li><a class="close-link"><i class="fa fa-close"></i></a>
                     </li>
                   </ul>
@@ -102,7 +94,7 @@ $course_dropdown_query="select * from tbl_course";
 
                   <p>List Of Semesters</p>
                   <?php
-                   $semester_query="select tbl_course.Course_Name,tbl_semester.Semester_ID,tbl_semester.Start_Date,tbl_semester.End_Date,tbl_semester.No_Of_Weeks from tbl_semester inner join tbl_course on tbl_course.Course_ID=tbl_semester.Course_ID";
+                   $semester_query="select tbl_course.Course_Name,tbl_programs.program_Name,tbl_institute.Institute_Name,tbl_semester.Semester_ID,tbl_semester.Start_Date,tbl_semester.End_Date,tbl_semester.No_Of_Weeks from tbl_semester inner join tbl_course on tbl_course.Course_ID=tbl_semester.Course_ID inner join tbl_course_program on tbl_course_program.Course_ID=tbl_course.Course_ID inner join tbl_programs on tbl_programs.Program_ID=tbl_course_program.Program_ID inner join tbl_institute on tbl_institute.Institute_ID=tbl_programs.Institute_ID";
                    $results = $con->query($semester_query);
                    $i=1;
                           
@@ -111,9 +103,11 @@ $course_dropdown_query="select * from tbl_course";
                   <table id="program_table" class="table table-striped projects">
                     <thead>
                       <tr>
-                        <th style="width: 1%">#</th>
-                        <th style="width: 8%">Course</th>
-			<th style="width: 20%">Start Date</th>
+                        <th >#</th>
+                        <th >Course</th>
+                        <th >Program</th>
+                        <th >Institute</th>
+			<th >Start Date</th>
                         <th>End Date</th>  
                         <th>Number Of Weeks</th>  
                         <th style="width: 15%">#Edit</th>
@@ -127,6 +121,14 @@ $course_dropdown_query="select * from tbl_course";
                         </td>
                         <td>
                          <?php echo $row['Course_Name']; ?>
+                  
+                        </td>
+                        <td>
+                         <?php echo $row['program_Name']; ?>
+                  
+                        </td>
+                        <td>
+                         <?php echo $row['Institute_Name']; ?>
                   
                         </td>
 			<td>
@@ -352,7 +354,14 @@ $course_dropdown_query="select * from tbl_course";
           $("#delete_id").val(id);
           $("#delete_form").submit();
       }
-  $("#program_table").DataTable();
+  $("#program_table").DataTable(
+          {
+    "aoColumnDefs": [{
+      "bSortable": false, 
+      "aTargets": [7]
+    }]
+  } 
+    );
   
   function getProgramDetail(id){
        $.getJSON('admin_controller_edit_semester.php?id='+id, function(jd) {
