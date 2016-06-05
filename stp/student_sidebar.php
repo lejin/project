@@ -34,19 +34,20 @@
                 </li>
                 <li><a href="student_assignment.php"><i class="fa fa-desktop"></i> Assignments</a>
                 </li>
-                <li><a href="student_graph.php"><i class="fa fa-table"></i> Tasks Chart 1</a>
+              <!--  <li><a href="student_graph.php"><i class="fa fa-table"></i> Tasks Chart 1</a>   </li>  -->
+                <li><a href="student_graph_combined.php"><i class="fa fa-bar-chart"></i> Combined Chart</a>
              
                 </li>
-                <li><a href="student_graph3.php"><i class="fa fa-table"></i> Tasks Chart 2</a>
+                <li><a href="student_graph3.php"><i class="fa fa-line-chart"></i> Tasks Chart </a>
              
                 </li>
-                <li><a href="student_graph1.php"><i class="fa fa-table"></i> Assignments Chart 1</a>
+              <!--  <li><a href="student_graph1.php"><i class="fa fa-table"></i> Assignments Chart 1</a> -->
              
                 </li>
-                <li><a href="student_graph2.php"><i class="fa fa-table"></i> Assignments Chart 2 </a>
+                <li><a href="student_graph2.php"><i class="fa fa-area-chart"></i> Assignments Chart  </a>
              
                 </li>
-                <li><a href="student_profile.php"><i class="fa fa-bar-chart-o"></i> Profile </a></li>
+                <li><a href="student_profile.php"><i class="fa fa-instagram"></i> Profile </a></li>
               </ul>
             </div>
           </div>

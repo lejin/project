@@ -101,13 +101,13 @@ WHERE assi.Course_ID=? ORDER BY assi.End_Date ASC";
                     while ($stmt_task->fetch()) {
                         if ($flag == 0) {
                             $graph_categories.="'" . $course_name . '/' . $task_name . '<br\>(' . $task_due_date . ')' . "'";
-                            $pending_work.='-' . ($task_pref_hours - $completed_hours);
-                            $completed_work.=$completed_hours;
+                            $pending_work.= ($task_pref_hours - $completed_hours);
+                            $completed_work.='-' .$completed_hours;
                             $flag = 1;
                         } else {
                             $graph_categories.=",'" . $course_name . '/' . $task_name . '<br\>(' . $task_due_date . ')' . "'";
-                            $pending_work.=",-" . ($task_pref_hours - $completed_hours);
-                            $completed_work.=',' . $completed_hours;
+                            $pending_work.=',' . ($task_pref_hours - $completed_hours);
+                            $completed_work.=",-" . $completed_hours;
                         }
 //                                                
                     }
@@ -138,7 +138,7 @@ WHERE assi.Course_ID=? ORDER BY assi.End_Date ASC";
                             text: 'Assignments'
                         },
                         subtitle: {
-                            text: 'Completed work to the top and Pending work to the bottom'
+                            text: 'Pending work to the top and Completed work to the bottom'
                         },
                         xAxis: [{
                                 categories: categories,
