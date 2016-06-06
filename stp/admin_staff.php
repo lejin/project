@@ -69,7 +69,7 @@ include './admin_session_check.php';
         <div class="" style="min-height: 100% !important;">
           <div class="page-title">
             <div class="title_left">
-              <h3>Program <small>List </small></h3>
+             
             </div>
 
    
@@ -80,7 +80,7 @@ include './admin_session_check.php';
               <div class="col-md-12" >
               <div class="x_panel" >
                 <div class="x_title">
-                    <h2>Program</h2> &nbsp;<button class="btn btn-success" onclick="showAddModal();">Add Program</button>
+                    <h2>Staff List</h2> 
                   <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>

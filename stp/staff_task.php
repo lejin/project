@@ -120,7 +120,7 @@ $course_id=$row['Course_ID'];
                     </thead>
                     <tbody>
                      <?php
-                   $assignment_query="select * from tbl_task where  tbl_task.author_id='$user_id'";
+                   $assignment_query="select * from tbl_task where  tbl_task.author_id='$user_id' and tbl_task.Course_ID='$course_id'";
                    $results = $con->query($assignment_query);
                    $i=1; 
                      
@@ -187,7 +187,7 @@ $course_id=$row['Course_ID'];
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
                         </button>
-                        <h4 class="modal-title" id="myModalLabel2">Add Assignment</h4>
+                        <h4 class="modal-title" id="myModalLabel2">Add Task</h4>
                       </div>
                         <form action="staff_controller_add_task.php" method="post">
                       <div class="modal-body">
@@ -275,7 +275,7 @@ $course_id=$row['Course_ID'];
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
                         </button>
-                        <h4 class="modal-title" id="myModalLabel2">Edit Semester</h4>
+                        <h4 class="modal-title" id="myModalLabel2">Edit Task</h4>
                       </div>
                         <form action="staff_controller_update_task.php" method="post">
            <div class="modal-body">

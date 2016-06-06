@@ -120,7 +120,7 @@ $course_id=$row['Course_ID'];
                     </thead>
                     <tbody>
                      <?php
-                   $assignment_query="select tbl_assignment.Assignment_ID,tbl_assignment.assignment_description,tbl_assignment.Start_Date,tbl_assignment.End_Date,tbl_assignment.Assignment_Name,tbl_assignment.Weightage,tbl_assignment.preffereed_Hours,tbl_course.Course_Name from tbl_assignment inner join tbl_course on tbl_course.Course_ID=tbl_assignment.Course_ID where tbl_assignment.author_id='$user_id'";
+                   $assignment_query="select tbl_assignment.Assignment_ID,tbl_assignment.assignment_description,tbl_assignment.Start_Date,tbl_assignment.End_Date,tbl_assignment.Assignment_Name,tbl_assignment.Weightage,tbl_assignment.preffereed_Hours,tbl_course.Course_Name from tbl_assignment inner join tbl_course on tbl_course.Course_ID=tbl_assignment.Course_ID where tbl_assignment.author_id='$user_id' and tbl_assignment.Course_ID='$course_id'";
                    $results = $con->query($assignment_query);
                    $i=1; 
                      
