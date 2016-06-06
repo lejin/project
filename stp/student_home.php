@@ -74,7 +74,7 @@ $user_course_query="select tbl_user_course.Course_ID from tbl_user_course where 
         <div class="">
           <div class="page-title">
             <div class="title_left">
-              <h3>To Do <small>List </small></h3>
+             
             </div>
 
    
