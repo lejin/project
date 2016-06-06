@@ -246,7 +246,7 @@ $user_course_query="select tbl_user_course.Course_ID from tbl_user_course where 
                           <small><?php if($progress<=100){ echo "$progress";}else{echo "100";} ?> % Complete</small>
                         </td>
                         <td>
-                            <?php if($progress<=100){ ?>
+                            <?php if($progress<100){ ?>
                           <button type="button" class="btn btn-success btn-xs">Started</button>
                             <?php }
                             else{
