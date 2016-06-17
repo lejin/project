@@ -2,6 +2,8 @@
 include './admin_session_check.php';
 include './config.php';
 include './admin_home_counts.php';
+$user_request_query = "select tbl_user.User_ID,tbl_user.F_Name,tbl_user.L_Name,tbl_user.Recovery_Mail,tbl_institute.Institute_Name from tbl_user inner join tbl_institute on tbl_institute.Institute_ID=tbl_user.Institute_ID where tbl_user.User_Type_ID=2 and tbl_user.user_approoved=0";
+$results = $con->query($user_request_query);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -107,8 +109,52 @@ include './admin_home_counts.php';
                                 <p><?php echo $course_count; ?> courses available.</p>
                             </div>
                         </div>
-                    </div>
+                        <!-- requests  -->
 
+                    <div class="col-md-4 col-sm-12 col-xs-12">
+                        <div>
+                            <div class="x_title">
+                                <h2>Staff Requests</h2>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                    </li>
+<!--                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Settings 1</a>
+                                            </li>
+                                            <li><a href="#">Settings 2</a>
+                                            </li>
+                                        </ul>
+                                    </li>-->
+                                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                    </li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                            <ul class="list-unstyled top_profiles scroll-view">
+
+                                <?php while ($row = $results->fetch_assoc()) { ?>
+                                    <li class="media event">
+                                        <a class="pull-left border-aero profile_thumb">
+                                            <i class="fa fa-user aero"></i>
+                                        </a>
+                                        <div class="media-body">
+                                            <?php echo $row['F_Name'] . " " . $row['L_Name']; ?>
+
+                                            <p><?php echo $row['Recovery_Mail']; ?> <a class="title" href="#" onclick="approove(<?php echo $row['User_ID']; ?>);"> <i style="font-size: 25px;" class="fa fa-check-circle pull-right"></i> </a></p>
+                                            <p><?php echo $row['Institute_Name']; ?>                          </p>
+                                        </div>
+                                    </li>
+
+                                <?php } ?>
+                            </ul>
+                        </div>
+                    </div>
+                    </div>
+                    
+
+                    <!-- requests -->
                 </div>
                 <!-- /page content -->
 
@@ -117,6 +163,11 @@ include './admin_home_counts.php';
                 <!-- /footer content -->
             </div>
         </div>
+        <!--student approval hidden form-->
+        <form id="staff_form" action="./admin_controller_approove_staff.php" method="post">
+            <input type="hidden" id="staff_id" name="id">
+        </form> 
+        <!--student approval hidden form-->
         <!-- Small modal -->
         <div id="add_modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
@@ -285,6 +336,14 @@ include './admin_home_counts.php';
         <script src="js/datatables/dataTables.scroller.min.js"></script>
         <script>
 
+        </script>
+        <script>
+//fuction to send post parms to the controller for the approval of staff
+//on pressing the approval button
+            function approove(id) {
+                $("#staff_id").val(id);
+                $("#staff_form").submit();
+            }
         </script>
     </body>
 

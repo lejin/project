@@ -1,5 +1,5 @@
 <?php
-include './staff_session_check.php';
+include './student_session_check.php';
 include './config.php';
 $user_id=$_SESSION['user_id'];
 $query = mysqli_query($con,"select tbl_user.F_Name,tbl_user.L_Name,tbl_user.Recovery_Mail,tbl_user.Password,tbl_user_course.Course_ID from tbl_user left join tbl_user_course on tbl_user.User_ID=tbl_user_course.User_ID where tbl_user.User_ID = '$user_id'")
@@ -62,10 +62,10 @@ $row=mysqli_fetch_array($query);
 
     <div class="main_container">
 
-       <?php include './staff_sidebar.php'; ?>
+       <?php include './student_sidebar.php'; ?>
 
       <!-- top navigation -->
-      <?php include './staff_topbar.php'; ?>
+      <?php include './student_topbar.php'; ?>
       <!-- /top navigation -->
 
       <!-- page content -->
@@ -83,7 +83,7 @@ $row=mysqli_fetch_array($query);
             <div class="col-md-offset-1 col-md-9 col-sm-9 col-xs-9" >
               <div class="x_panel">
                 <div class="x_title">
-                  <h2>Staff Profile <small>update profile</small></h2>
+                  <h2>Student Profile <small>update profile</small></h2>
                   <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>
@@ -95,7 +95,7 @@ $row=mysqli_fetch_array($query);
                 </div>
                 <div class="x_content">
                   <br>
-                  <form id="staff_profile_form" method="post" action="staff_controller_update_profile.php">
+                  <form id="staff_profile_form" method="post" action="student_controller_update_profile.php">
 
                     <div class="form-group">
                       <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first_name">First Name 
@@ -158,7 +158,7 @@ $row=mysqli_fetch_array($query);
                     <div class="ln_solid"></div>
                     <div class="form-group">
                       <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-4">
-                         
+                        
                           <input type="hidden" name="id" value="<?php echo $user_id; ?>">
                         <button type="reset" class="btn btn-primary">Cancel</button>
                         <button type="submit" class="btn btn-success">Submit</button>
@@ -188,7 +188,7 @@ $row=mysqli_fetch_array($query);
       <!-- /page content -->
 
       <!-- footer content -->
-      <?php include './staff_footer.php'; ?>
+      <?php include './student_footer.php'; ?>
       <!-- /footer content -->
     </div>
   </div>

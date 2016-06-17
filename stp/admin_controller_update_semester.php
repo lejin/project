@@ -3,9 +3,16 @@ include './config.php';
 
         $start_date=$_POST['start_date'];
         $end_date=$_POST['end_date'];
-        $week=$_POST['week'];
+       // $week=$_POST['week'];
         $course=$_POST['course']; 
         $id=$_POST['id'];
+        
+        //        calculate number of weeks
+        $date1 = new DateTime($start_date);
+        $date2 = new DateTime($end_date);
+        $diff = $date2->diff($date1)->format("%a");
+        $week=  floor($diff/7);
+        
         $insert_query="update tbl_semester set tbl_semester.Start_Date='$start_date',tbl_semester.End_Date='$end_date',tbl_semester.No_Of_Weeks='$week',tbl_semester.Course_ID='$course' where tbl_semester.Semester_ID='$id'";
 	$query = mysqli_query($con,$insert_query)  or die(mysqli_error($con));
                

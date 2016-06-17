@@ -1,7 +1,13 @@
 <?php
 include './student_session_check.php';
 include './config.php';
-include './admin_home_counts.php';
+$user_id=$_SESSION['user_id'];
+$user_course_query="select tbl_user_course.Course_ID from tbl_user_course where tbl_user_course.User_ID=$user_id";
+
+	$result = mysqli_query($con,$user_course_query) or die(mysqli_error());
+        $row = mysqli_fetch_assoc($result);
+        $course_id=$row['Course_ID']
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -64,197 +70,221 @@ include './admin_home_counts.php';
 
       <!-- page content -->
       <div class="right_col" role="main">
-          <div class="row top_tiles">
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-              <div class="tile-stats">
-                <div class="icon"><i class="fa fa-caret-square-o-right"></i>
-                </div>
-                  <div class="count"><?php echo $user_count; ?></div>
 
-                <h3>Users</h3>
-                <p><?php echo $user_count; ?> active users.</p>
-              </div>
+        <div class="">
+          <div class="page-title">
+            <div class="title_left">
+             
             </div>
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-              <div class="tile-stats">
-                <div class="icon"><i class="fa fa-comments-o"></i>
-                </div>
-                <div class="count"><?php echo $institute_count; ?></div>
 
-                <h3>Institutes</h3>
-                <p><?php echo $institute_count; ?> institutes registered.</p>
-              </div>
-            </div>
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-              <div class="tile-stats">
-                <div class="icon"><i class="fa fa-sort-amount-desc"></i>
-                </div>
-                <div class="count"><?php echo $program_count; ?></div>
+   
+          </div>
+            
+            
+          <div class="clearfix"></div>
 
-                <h3>Programs</h3>
-                <p><?php echo $program_count; ?> different programs.</p>
-              </div>
-            </div>
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-              <div class="tile-stats">
-                <div class="icon"><i class="fa fa-check-square-o"></i>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2>Tasks</h2>
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+             
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                  </ul>
+                  <div class="clearfix"></div>
                 </div>
-                <div class="count"><?php echo $course_count; ?></div>
+                <div class="x_content">
 
-                <h3>Courses</h3>
-                <p><?php echo $course_count; ?> courses available.</p>
+                  <p>Task assigned to student</p>
+
+                  <!-- start project list -->
+                  <table class="table table-striped projects">
+                    <thead>
+                      <tr>
+                        <th style="width: 1%">#</th>
+                        <th style="width: 20%">Task Name</th>
+			<th style="width: 8%">Due Date</th>
+                        <th style="width: 8%">Preferred Hours</th>
+                        <th style="width: 8%">Completed Hours</th>
+                        <th>Progress</th>
+                        <th style="width: 20%">Status</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                                 <?php
+                   $assignment_query="select tbl_task.Task_Name,tbl_task.Task_start_date,tbl_task.Task_due_date,tbl_task.preferred_hour,tbl_student_task.completed_hours from tbl_student_task inner join tbl_task on tbl_task.Task_ID=tbl_student_task.task_id where tbl_student_task.student_id='$user_id' and tbl_task.course_id='$course_id'";
+                   $results = $con->query($assignment_query);
+                   $i=1; 
+                     
+                     while($row = $results->fetch_assoc()) {
+                         $pref_hour=$row['preferred_hour'];
+                         $completed_hour=$row['completed_hours'];
+                         $progress=  ceil(($completed_hour/$pref_hour)*100);
+                         ?>
+                      <tr>
+                          <td><?php echo "$i"; ?></td>
+                        <td>
+                          <a><?php echo $row['Task_Name']; ?></a>
+                          <br />
+                          <small>starts on <?php echo $row['Task_start_date']; ?></small>
+                        </td>
+			<td>
+                         <?php echo $row['Task_due_date']; ?>
+
+                        </td>
+                        <td>
+                         <?php echo $row['preferred_hour']; ?>
+
+                        </td>
+                        <td>
+                         <?php echo $row['completed_hours']; ?>
+
+                        </td>
+                        <td class="project_progress">
+                          <div class="progress progress_sm">
+                              <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="<?php echo "$progress"; ?>"></div>
+                          </div>
+                          <small><?php if($progress<=100){ echo "$progress";}else{echo "100";} ?> % Complete</small>
+                        </td>
+                        <td>
+                            <?php if($progress<=100){ ?>
+                          <button type="button" class="btn btn-success btn-xs">Started</button>
+                            <?php }
+                            else{
+                            ?>
+                          <button type="button" class="btn btn-success btn-xs">Finished</button>
+                            <?php } ?>
+                        </td>                    
+                      </tr>
+                     <?php 
+                        ++$i;
+                            } 
+                      ?>
+
+                    </tbody>
+                  </table>
+                  <!-- end project list -->
+
+                </div>
               </div>
             </div>
           </div>
+          
+                    <div class="clearfix"></div>
 
+          <div class="row">
+            <div class="col-md-12">
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2>Assignments</h2>
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                   
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                  </ul>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                  <p>Assignments assigned to Student</p>
+
+                  <!-- start project list -->
+                  <table class="table table-striped projects">
+                    <thead>
+                      <tr>
+                        <th style="width: 1%">#</th>
+                        <th style="width: 20%">Task Name</th>
+			<th style="width: 8%">Due Date</th>
+                        <th style="width: 8%">Preferred Hours</th>
+                        <th style="width: 8%">Completed Hours</th>
+                        <th>Progress</th>
+                        <th style="width: 20%">Status</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                                 <?php
+                   $assignment_query="select tbl_assignment.Assignment_Name,tbl_assignment.Start_Date,tbl_assignment.End_Date,tbl_assignment.preffereed_Hours,tbl_student_assignment.completed_hours from tbl_student_assignment inner join tbl_assignment on tbl_assignment.Assignment_ID=tbl_student_assignment.assignment_id where tbl_student_assignment.student_id='$user_id' and tbl_assignment.course_id='$course_id'";
+                   $results = $con->query($assignment_query);
+                   $i=1; 
+                     
+                     while($row = $results->fetch_assoc()) {
+                         $pref_hour=$row['preffereed_Hours'];
+                         $completed_hour=$row['completed_hours'];
+                         $progress=  ceil(($completed_hour/$pref_hour)*100);
+                         ?>
+                      <tr>
+                          <td><?php echo "$i"; ?></td>
+                        <td>
+                          <a><?php echo $row['Assignment_Name']; ?></a>
+                          <br />
+                          <small>starts on <?php echo $row['Start_Date']; ?></small>
+                        </td>
+			<td>
+                         <?php echo $row['End_Date']; ?>
+
+                        </td>
+                        <td>
+                         <?php echo $row['preffereed_Hours']; ?>
+
+                        </td>
+                        <td>
+                         <?php echo $row['completed_hours']; ?>
+
+                        </td>
+                        <td class="project_progress">
+                          <div class="progress progress_sm">
+                              <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="<?php echo "$progress"; ?>"></div>
+                          </div>
+                          <small><?php if($progress<=100){ echo "$progress";}else{echo "100";} ?> % Complete</small>
+                        </td>
+                        <td>
+                            <?php if($progress<100){ ?>
+                          <button type="button" class="btn btn-success btn-xs">Started</button>
+                            <?php }
+                            else{
+                            ?>
+                          <button type="button" class="btn btn-success btn-xs">Finished</button>
+                            <?php } ?>
+                        </td>                    
+                      </tr>
+                     <?php 
+                        ++$i;
+                            } 
+                      ?>
+
+                    </tbody>
+                  </table>
+                  <!-- end project list -->
+
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
       </div>
       <!-- /page content -->
-
       <!-- footer content -->
-      <?php include './admin_footer.php'; ?>
+      <?php include './student_footer.php'; ?>
       <!-- /footer content -->
     </div>
   </div>
-               <!-- Small modal -->
-               <div id="add_modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel2">Add Institute</h4>
-                      </div>
-                        <form action="admin_controller_add_institute.php" method="post">
-                      <div class="modal-body">
-                        
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="col-md-6">  
-                                        <label for="name">Institute Name </label>
-                                    </div>
-                                <div class="col-md-6">
-                                    <input type="text" id="name" name="name" required="required" placeholder="institute name" class="form-control">
-                                </div>
-                                </div>
-                                <br/>
-                                <br/>
-                                <div class="form-group">
-                                    <div class="col-md-6">  
-                                        <label for="address">Address </label>
-                                    </div>
-                                <div class="col-md-6">
-                                    <input type="text" id="address" name="address" required="required" placeholder="institute address" class="form-control">
-                                </div>
-                                </div>
-                                <br/>
-                                <br/>
-                                <div class="form-group">
-                                    <div class="col-md-6">  
-                                        <label for="phone">Phone Number </label>
-                                    </div>
-                                <div class="col-md-6">
-                                    <input type="text" id="phone" name="phone" required="required" placeholder="institute address" class="form-control ">
-                                </div>
-                                </div>
-                                <br/>
-                                <br/>
-                                <div class="form-group">
-                                    <div class="col-md-6">  
-                                        <label for="phone">Email </label>
-                                    </div>
-                                <div class="col-md-6">
-                                    <input type="email" id="email" name="email" required="required" placeholder="institute email" class="form-control ">
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                      </div>
-                      <div class="modal-footer">
-                          <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
-                          <button type="submit" class="btn btn-primary">Save changes</button>
-                      </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-               <!-- edit modal -->
-               <div class="modal fade bs-example-modal-sm" tabindex="-1" id="edit_modal" role="dialog" aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel2">Add Institute</h4>
-                      </div>
-                        <form action="admin_controller_update_institute.php" method="post">
-                      <div class="modal-body">
-                        
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="col-md-6">  
-                                        <label for="name">Institute Name </label>
-                                    </div>
-                                <div class="col-md-6">
-                                    <input type="text" id="edit_name" name="name" required="required" placeholder="institute name" class="form-control">
-                                </div>
-                                </div>
-                                <br/>
-                                <br/>
-                                <div class="form-group">
-                                    <div class="col-md-6">  
-                                        <label for="address">Address </label>
-                                    </div>
-                                <div class="col-md-6">
-                                    <input type="text" id="edit_address" name="address" required="required" placeholder="institute address" class="form-control">
-                                </div>
-                                </div>
-                                <br/>
-                                <br/>
-                                <div class="form-group">
-                                    <div class="col-md-6">  
-                                        <label for="phone">Phone Number </label>
-                                    </div>
-                                <div class="col-md-6">
-                                    <input type="text" id="edit_phone" name="phone" required="required" placeholder="institute address" class="form-control ">
-                                </div>
-                                </div>
-                                <br/>
-                                <br/>
-                                <div class="form-group">
-                                    <div class="col-md-6">  
-                                        <label for="phone">Email </label>
-                                    </div>
-                                <div class="col-md-6">
-                                    <input type="email" id="edit_email" name="email" required="required" placeholder="institute email" class="form-control ">
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                      </div>
-                            <input id="edit_id" type="hidden" name="id"> 
-                      <div class="modal-footer">
-                          <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
-                          <button type="submit" class="btn btn-primary">Save changes</button>
-                      </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-               
-                <!-- /modals -->
+             
   <div id="custom_notifications" class="custom-notifications dsp_none">
     <ul class="list-unstyled notifications clearfix" data-tabbed_notifications="notif-group">
     </ul>
     <div class="clearfix"></div>
     <div id="notif-group" class="tabbed_notifications"></div>
   </div>
-                <form id="delete_form" action="admin_controller_delete_institute.php" method="post">
-                    <input type="hidden" name="id" id="delete_id">
-                </form>
+               
   <script src="js/bootstrap.min.js"></script>
 
   <!-- bootstrap progress js -->
@@ -281,9 +311,7 @@ include './admin_home_counts.php';
         <script src="js/datatables/dataTables.responsive.min.js"></script>
         <script src="js/datatables/responsive.bootstrap.min.js"></script>
         <script src="js/datatables/dataTables.scroller.min.js"></script>
-  <script>
-
-  </script>
+  
 </body>
 
 </html>

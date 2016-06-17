@@ -82,15 +82,7 @@ include './config.php';
                   <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                      <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Settings 1</a>
-                        </li>
-                        <li><a href="#">Settings 2</a>
-                        </li>
-                      </ul>
-                    </li>
+                
                     <li><a class="close-link"><i class="fa fa-close"></i></a>
                     </li>
                   </ul>
@@ -114,7 +106,7 @@ include './config.php';
 			<th style="width: 20%">Address</th>
                         <th>Phone number</th>
                         <th style="width: 20%">email</th>
-                        <th style="width: 15%">#Edit</th>
+                        <th style="width: 15%">Edit</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -338,7 +330,14 @@ include './config.php';
           $("#delete_id").val(id);
           $("#delete_form").submit();
       }
-  $("#institute_table").DataTable();
+  $("#institute_table").DataTable(
+     {
+    "aoColumnDefs": [{
+      "bSortable": false, 
+      "aTargets": [5]
+    }]
+  }      
+    );
   
   function getInstitutedetails(id){
        $.getJSON('admin_controller_edit_institute.php?id='+id, function(jd) {

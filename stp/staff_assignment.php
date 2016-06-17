@@ -1,8 +1,13 @@
 <?php
 include './config.php';
-include './admin_session_check.php';
-$course_dropdown_query="select * from tbl_course";
+include './staff_session_check.php';
+include './staff_profile_complete_check.php';
+$user_id=$_SESSION['user_id'];
 
+$course_id_query="select tbl_user_course.Course_ID from tbl_user_course where tbl_user_course.User_ID='$user_id'";
+$q_result=mysqli_query($con,$course_id_query);	
+$row= mysqli_fetch_array($q_result);
+$course_id=$row['Course_ID'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -57,10 +62,10 @@ $course_dropdown_query="select * from tbl_course";
 
     <div class="main_container">
 
-       <?php include './admin_sidebar.php'; ?>
+       <?php include './staff_sidebar.php'; ?>
 
       <!-- top navigation -->
-      <?php include './admin_topbar.php'; ?>
+      <?php include './staff_topbar.php'; ?>
       <!-- /top navigation -->
 
       <!-- page content -->
@@ -69,7 +74,7 @@ $course_dropdown_query="select * from tbl_course";
         <div class="" style="min-height: 100% !important;">
           <div class="page-title">
             <div class="title_left">
-              <h3>Semester <small>List </small></h3>
+              <h3>Assignment <small>List </small></h3>
             </div>
 
    
@@ -80,7 +85,7 @@ $course_dropdown_query="select * from tbl_course";
               <div class="col-md-12" >
               <div class="x_panel" >
                 <div class="x_title">
-                    <h2>Semester</h2> &nbsp;<button class="btn btn-success" onclick="showAddModal();">Add Semester</button>
+                    <h2>Assignment</h2> &nbsp;<button class="btn btn-success" onclick="showAddModal();">Add Assignment</button>
                   <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>
@@ -92,43 +97,44 @@ $course_dropdown_query="select * from tbl_course";
                 </div>
                 <div class="x_content">
 
-                  <p>List Of Semesters</p>
+                  <p>List Of Assignments</p>
                   <?php
-                   $semester_query="select tbl_course.Course_Name,tbl_programs.program_Name,tbl_institute.Institute_Name,tbl_semester.Semester_ID,tbl_semester.Start_Date,tbl_semester.End_Date,tbl_semester.No_Of_Weeks from tbl_semester inner join tbl_course on tbl_course.Course_ID=tbl_semester.Course_ID inner join tbl_course_program on tbl_course_program.Course_ID=tbl_course.Course_ID inner join tbl_programs on tbl_programs.Program_ID=tbl_course_program.Program_ID inner join tbl_institute on tbl_institute.Institute_ID=tbl_programs.Institute_ID";
-                   $results = $con->query($semester_query);
-                   $i=1;
-                          
+//                  $assignment_query="select tbl_assignment.Assignment_ID,tbl_assignment.Start_Date,tbl_assignment.End_Date,tbl_assignment.Assignment_Name,tbl_assignment.Weightage,tbl_assignment.preffereed_Hours,tbl_course.Course_Name from tbl_assignment inner join tbl_course on tbl_course.Course_ID=tbl_assignment.Course_ID where tbl_assignment.author_id=";
+//
+//                   $results = $con->query($assignment_query);
+//                   $i=1;                          
                   ?>
                   <!-- start project list -->
                   <table id="program_table" class="table table-striped projects">
                     <thead>
                       <tr>
-                        <th >#</th>
-                        <th >Course</th>
-                        <th >Program</th>
-                        <th >Institute</th>
+                        <th style="width: 1%">#</th>
+                        <th style="width: 8%">Assignment</th>
+                         <th style="width: 8%">Description</th>
 			<th >Start Date</th>
-                        <th>End Date</th>  
-                        <th>Number Of Weeks</th>  
-                        <th style="width: 15%">Edit</th>
+                        <th>End Date</th> 
+                        <th>Weightage</th>  
+                        <th>preferred hours</th>  
+                        <th>Edit</th>
                       </tr>
                     </thead>
                     <tbody>
-                        <?php while($row = $results->fetch_assoc()) { ?>
+                     <?php
+                   $assignment_query="select tbl_assignment.Assignment_ID,tbl_assignment.assignment_description,tbl_assignment.Start_Date,tbl_assignment.End_Date,tbl_assignment.Assignment_Name,tbl_assignment.Weightage,tbl_assignment.preffereed_Hours,tbl_course.Course_Name from tbl_assignment inner join tbl_course on tbl_course.Course_ID=tbl_assignment.Course_ID where tbl_assignment.author_id='$user_id' and tbl_assignment.Course_ID='$course_id'";
+                   $results = $con->query($assignment_query);
+                   $i=1; 
+                     
+                     while($row = $results->fetch_assoc()) { ?>
                       <tr>
                         <td>
                               <?php echo $i; ?>
                         </td>
                         <td>
-                         <?php echo $row['Course_Name']; ?>
+                         <?php echo $row['Assignment_Name']; ?>
                   
                         </td>
                         <td>
-                         <?php echo $row['program_Name']; ?>
-                  
-                        </td>
-                        <td>
-                         <?php echo $row['Institute_Name']; ?>
+                         <?php echo $row['assignment_description']; ?>
                   
                         </td>
 			<td>
@@ -139,12 +145,15 @@ $course_dropdown_query="select * from tbl_course";
                            <?php echo $row['End_Date']; ?>
                         </td>  
                         <td>
-                           <?php echo $row['No_Of_Weeks']; ?>
+                           <?php echo $row['Weightage']; ?>
+                        </td> 
+                        <td>
+                           <?php echo $row['preffereed_Hours']; ?>
                         </td> 
                         <td>
                         <!--  <a href="#" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a> -->
-                          <button class="btn btn-info btn-xs" onclick="getProgramDetail('<?php echo $row['Semester_ID']; ?>')"><i class="fa fa-pencil"></i> Edit </button>
-                          <button class="btn btn-danger btn-xs" onclick="deleteProgram('<?php echo $row['Semester_ID']; ?>');"><i class="fa fa-trash-o"></i> Delete </button>
+                          <button class="btn btn-info btn-xs" onclick="getProgramDetail('<?php echo $row['Assignment_ID']; ?>')"><i class="fa fa-pencil"></i> Edit </button>
+                          <button class="btn btn-danger btn-xs" onclick="deleteProgram('<?php echo $row['Assignment_ID']; ?>');"><i class="fa fa-trash-o"></i> Delete </button>
                         </td>
                       </tr>
                         <?php 
@@ -166,7 +175,7 @@ $course_dropdown_query="select * from tbl_course";
       <!-- /page content -->
 
       <!-- footer content -->
-      <?php include './admin_footer.php'; ?>
+      <?php include './staff_footer.php'; ?>
       <!-- /footer content -->
     </div>
   </div>
@@ -178,38 +187,37 @@ $course_dropdown_query="select * from tbl_course";
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
                         </button>
-                        <h4 class="modal-title" id="myModalLabel2">Add Semester</h4>
+                        <h4 class="modal-title" id="myModalLabel2">Add Assignment</h4>
                       </div>
-                        <form action="admin_controller_add_semester.php" method="post">
+                        <form action="staff_controller_add_assignment.php" method="post">
                       <div class="modal-body">
                         
                         <div class="row">
-                            <div class="col-md-12">
-                                                              <div class="form-group">
-                                    <div class="col-md-6">  
-                                        <label for="description">Course </label>
-                                    </div>
-                                    <div class="col-md-6">
-                                    <select class="form-control" required name="course">
-				               <?php
-                                                    //$stmt = $con->prepare($user_type_query);
-                                                    $results2 = $con->query($course_dropdown_query);
-                            
-                                                 ?>
-				<option value="">Please Select </option>
-                                <?php while($row = $results2->fetch_assoc()) { ?>
-                                <option value="<?php echo $row["Course_ID"]; ?>"><?php echo $row["Course_Name"]; ?></option>
-                                <?php } 
-                                $results2->free();
-                                // close connection 
-                               ?>
-                                </select>
-                                </div>
-                                </div>
-                                <br/><br/>
+                            <div class="col-md-12">     
+                           
                                 <div class="form-group">
                                     <div class="col-md-6">  
-                                        <label for="name">Start Date</label>
+                                        <label for="name">Assignment Name</label>
+                                    </div>
+                                <div class="col-md-6">
+                                    <input type="text" id="name" name="name" required="required"  class="form-control">
+                                </div>
+                                </div>
+                                <br/>
+                                <br/>
+                                <div class="form-group">
+                                    <div class="col-md-6">  
+                                        <label for="description">Assignment Description</label>
+                                    </div>
+                                <div class="col-md-6">
+                                    <input type="text" id="description" name="description" required="required"  class="form-control">
+                                </div>
+                                </div>
+                                <br/>
+                                <br/>
+                                <div class="form-group">
+                                    <div class="col-md-6">  
+                                        <label for="start_date">Start Date</label>
                                     </div>
                                 <div class="col-md-6">
                                     <input type="text" id="start_date" name="start_date" required="required"  class="form-control">
@@ -227,14 +235,33 @@ $course_dropdown_query="select * from tbl_course";
                                 </div>
                                 <br/>
                                 <br/>
-                    
-                          
+                                <div class="form-group">
+                                    <div class="col-md-6">  
+                                        <label for="weightage">Weightage </label>
+                                    </div>
+                                <div class="col-md-6">
+                                    <input type="text" id="weightage" name="weightage" required="required" placeholder="weightage" class="form-control">
+                                </div>
+                                </div>
+                                <br/>
+                                <br/>
+                                 <div class="form-group">
+                                    <div class="col-md-6">  
+                                        <label for="hour">Prefered Hours </label>
+                                    </div>
+                                <div class="col-md-6">
+                                    <input type="text" id="hour" name="hours" required="required" placeholder="hours" class="form-control">
+                                </div>
+                                </div>
+                                <br/>
+                                <br/>
+                                <input type="hidden" name="course" value="<?php echo $course_id; ?>">
                             </div>
                         </div>
                       </div>
                       <div class="modal-footer">
                           <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
-                          <button type="submit" class="btn btn-primary">Save changes</button>
+                          <button type="submit" class="btn btn-primary">Release Assignment</button>
                       </div>
                       </form>
                     </div>
@@ -250,36 +277,35 @@ $course_dropdown_query="select * from tbl_course";
                         </button>
                         <h4 class="modal-title" id="myModalLabel2">Edit Semester</h4>
                       </div>
-                        <form action="admin_controller_update_semester.php" method="post">
+                        <form action="staff_controller_update_assignment.php" method="post">
            <div class="modal-body">
                         
-                        <div class="row">
-                            <div class="col-md-12">
-                                                              <div class="form-group">
-                                    <div class="col-md-6">  
-                                        <label for="description">Course </label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <select id="edit_course" class="form-control" required name="course">
-				               <?php
-                                                    //$stmt = $con->prepare($user_type_query);
-                                                    $results2 = $con->query($course_dropdown_query);
-                            
-                                                 ?>
-				<option value="">Please Select </option>
-                                <?php while($row = $results2->fetch_assoc()) { ?>
-                                <option value="<?php echo $row["Course_ID"]; ?>"><?php echo $row["Course_Name"]; ?></option>
-                                <?php } 
-                                $results2->free();
-                                // close connection 
-                               ?>
-                                </select>
-                                </div>
-                                </div>
-                                <br/><br/>
+                               <div class="row">
+                            <div class="col-md-12">     
+                           
                                 <div class="form-group">
                                     <div class="col-md-6">  
-                                        <label for="name">Start Date</label>
+                                        <label for="name">Assignment Name</label>
+                                    </div>
+                                <div class="col-md-6">
+                                    <input type="text" id="edit_name" name="name" required="required"  class="form-control">
+                                </div>
+                                </div>
+                                <br/>
+                                <br/>
+                                <div class="form-group">
+                                    <div class="col-md-6">  
+                                        <label for="description">Assignment Description</label>
+                                    </div>
+                                <div class="col-md-6">
+                                    <input type="text" id="edit_description" name="description" required="required"  class="form-control">
+                                </div>
+                                </div>
+                                <br/>
+                                <br/>
+                                <div class="form-group">
+                                    <div class="col-md-6">  
+                                        <label for="start_date">Start Date</label>
                                     </div>
                                 <div class="col-md-6">
                                     <input type="text" id="edit_start_date" name="start_date" required="required"  class="form-control">
@@ -297,15 +323,34 @@ $course_dropdown_query="select * from tbl_course";
                                 </div>
                                 <br/>
                                 <br/>
-                
-                          
+                                <div class="form-group">
+                                    <div class="col-md-6">  
+                                        <label for="weightage">Weightage </label>
+                                    </div>
+                                <div class="col-md-6">
+                                    <input type="text" id="edit_weightage" name="weightage" required="required" placeholder="weightage" class="form-control">
+                                </div>
+                                </div>
+                                <br/>
+                                <br/>
+                                 <div class="form-group">
+                                    <div class="col-md-6">  
+                                        <label for="hour">Prefered Hours </label>
+                                    </div>
+                                <div class="col-md-6">
+                                    <input type="text" id="edit_hours" name="hours" required="required" placeholder="hours" class="form-control">
+                                </div>
+                                </div>
+                                <br/>
+                                <br/>
+                                <input type="hidden" id="edit_course" name="course" value="<?php echo $course_id; ?>">
                             </div>
                         </div>
                       </div>
                       <input id="edit_id" type="hidden" name="id"> 
                       <div class="modal-footer">
                           <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
-                          <button type="submit" class="btn btn-primary">Save changes</button>
+                          <button type="submit" class="btn btn-primary">Release Assignment</button>
                       </div>
                       </form>
                     </div>
@@ -319,7 +364,7 @@ $course_dropdown_query="select * from tbl_course";
     <div class="clearfix"></div>
     <div id="notif-group" class="tabbed_notifications"></div>
   </div>
-                <form id="delete_form" action="admin_controller_delete_semester.php" method="post">
+                <form id="delete_form" action="staff_controller_delete_assignment.php" method="post">
                     <input type="hidden" name="id" id="delete_id">
                 </form>
   <script src="js/bootstrap.min.js"></script>
@@ -355,21 +400,24 @@ $course_dropdown_query="select * from tbl_course";
           $("#delete_form").submit();
       }
   $("#program_table").DataTable(
-          {
+             {
     "aoColumnDefs": [{
       "bSortable": false, 
       "aTargets": [7]
     }]
-  } 
+  }       
     );
   
   function getProgramDetail(id){
-       $.getJSON('admin_controller_edit_semester.php?id='+id, function(jd) {
-                   $("#edit_id").val(jd.Semester_ID);
+       $.getJSON('staff_controller_edit_assignment.php?id='+id, function(jd) {
+                   $("#edit_id").val(jd.Assignment_ID);
                    $("#edit_start_date").val(jd.Start_Date);
                    $("#edit_end_date").val(jd.End_Date);
-                   $("#edit_week").val(jd.No_Of_Weeks);
-                   $("#edit_course").val(jd.Course_ID);                   
+                   $("#edit_name").val(jd.Assignment_Name);
+                   $("#edit_description").val(jd.assignment_description);
+                   $("#edit_course").val(jd.Course_ID); 
+                   $("#edit_hours").val(jd.preffereed_Hours); 
+                   $("#edit_weightage").val(jd.Weightage); 
                });
                $('#edit_modal').modal('show');  
   }

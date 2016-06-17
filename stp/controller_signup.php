@@ -10,7 +10,24 @@ if(isset($_POST['user_type']))
 	$username=$_POST['username'];
 	$password=$_POST['password'];
         $email=$_POST['email'];
-        $insert_query="insert into tbl_user(tbl_user.F_Name,tbl_user.L_Name,tbl_user.User_Name,tbl_user.Password,tbl_user.User_Type_ID,tbl_user.Institute_ID,tbl_user.Recovery_Mail) values('$firstname','$lastname','$username','$password','$user_type','$institute','$email')";
+        
+        
+       $query = mysqli_query($con,"select count(*) as count from tbl_user where tbl_user.User_Name='$username'")
+       or die(mysqli_error());
+	$row=mysqli_fetch_array($query);
+	if($row['count']>0){            
+            header("location:login.php?user_exist=true");
+            exit();
+        }
+        
+        
+        $approval_status=0;
+        if($user_type==3)
+        {
+//            exit();
+            $approval_status=1;
+        }
+        $insert_query="insert into tbl_user(tbl_user.F_Name,tbl_user.L_Name,tbl_user.User_Name,tbl_user.Password,tbl_user.User_Type_ID,tbl_user.Institute_ID,tbl_user.Recovery_Mail,tbl_user.user_approoved) values('$firstname','$lastname','$username','$password','$user_type','$institute','$email','$approval_status')";
 	$query = mysqli_query($con,$insert_query)
         or die(mysqli_error());
                 $userid=mysqli_insert_id($con);
@@ -20,11 +37,11 @@ if(isset($_POST['user_type']))
 			$query = mysqli_query($con,$institute_query) or die(mysqli_error());
                         //$_SESSION['username']=$row['username'];
 			//$_SESSION['user_id']=$row['user_id'];
-			header("location:index.html");
+			header("location:login.php?register=true");
 		}
 		else
 		{
-                        header("location:login.php");
+                        header("location:login.php?error=true");
 		}
 
 }

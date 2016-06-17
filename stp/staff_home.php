@@ -3,8 +3,7 @@ include './staff_session_check.php';
 include './config.php';
 include './admin_home_counts.php';
 include './staff_profile_complete_check.php';
-$user_request_query="select tbl_user.User_ID,tbl_user.F_Name,tbl_user.L_Name,tbl_user.Recovery_Mail,tbl_institute.Institute_Name from tbl_user inner join tbl_institute on tbl_institute.Institute_ID=tbl_user.Institute_ID where tbl_user.User_Type_ID=3 and tbl_user.user_approoved=0";
-  $results = $con->query($user_request_query);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -67,9 +66,9 @@ $user_request_query="select tbl_user.User_ID,tbl_user.F_Name,tbl_user.L_Name,tbl
 
       <!-- page content -->
       <div class="right_col" role="main">
-          <div class="col-md-8" style="margin-top: 30px;">
+          <div class="col-md-12" style="margin-top: 30px;">
           <div class="row top_tiles">
-            <div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="animated flipInY col-lg-3 col-md-3 col-sm-3 col-xs-12">
               <div class="tile-stats">
                 <div class="icon"><i class="fa fa-caret-square-o-right"></i>
                 </div>
@@ -79,7 +78,7 @@ $user_request_query="select tbl_user.User_ID,tbl_user.F_Name,tbl_user.L_Name,tbl
                 <p><?php echo $user_count; ?> active users.</p>
               </div>
             </div>
-            <div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="animated flipInY col-lg-3 col-md-3 col-sm-3 col-xs-12">
               <div class="tile-stats">
                 <div class="icon"><i class="fa fa-comments-o"></i>
                 </div>
@@ -91,7 +90,7 @@ $user_request_query="select tbl_user.User_ID,tbl_user.F_Name,tbl_user.L_Name,tbl
             </div>
               
 
-            <div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="animated flipInY col-lg-3 col-md-3 col-sm-3 col-xs-12">
               <div class="tile-stats">
                 <div class="icon"><i class="fa fa-sort-amount-desc"></i>
                 </div>
@@ -101,7 +100,7 @@ $user_request_query="select tbl_user.User_ID,tbl_user.F_Name,tbl_user.L_Name,tbl
                 <p><?php echo $program_count; ?> different programs.</p>
               </div>
             </div>
-            <div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="animated flipInY col-lg-3 col-md-3 col-sm-3 col-xs-12">
               <div class="tile-stats">
                 <div class="icon"><i class="fa fa-check-square-o"></i>
                 </div>
@@ -114,50 +113,7 @@ $user_request_query="select tbl_user.User_ID,tbl_user.F_Name,tbl_user.L_Name,tbl
         
           </div>
       </div>
-      <!-- requests  -->
-             
-              <div class="col-md-4 col-sm-12 col-xs-12">
-                    <div>
-                      <div class="x_title">
-                        <h2>Student Requests</h2>
-                        <ul class="nav navbar-right panel_toolbox">
-                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                          </li>
-                          <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                            <ul class="dropdown-menu" role="menu">
-                              <li><a href="#">Settings 1</a>
-                              </li>
-                              <li><a href="#">Settings 2</a>
-                              </li>
-                            </ul>
-                          </li>
-                          <li><a class="close-link"><i class="fa fa-close"></i></a>
-                          </li>
-                        </ul>
-                        <div class="clearfix"></div>
-                      </div>
-                      <ul class="list-unstyled top_profiles scroll-view">
-                       
-                           <?php while($row = $results->fetch_assoc()) { ?>
-                          <li class="media event">
-                          <a class="pull-left border-aero profile_thumb">
-                            <i class="fa fa-user aero"></i>
-                          </a>
-                          <div class="media-body">
-                              <?php echo $row['F_Name']." ".$row['L_Name']; ?>
-                             
-                              <p><?php echo $row['Recovery_Mail']; ?> <a class="title" href="#" onclick="approove(<?php echo $row['User_ID']; ?>);"> <i style="font-size: 25px;" class="fa fa-check-circle pull-right"></i> </a></p>
-                            <p><?php echo $row['Institute_Name']; ?>                          </p>
-                          </div>
-                        </li>
-          
-                           <?php } ?>
-                      </ul>
-                    </div>
-                  </div>
-        
-              <!-- requests -->
+      
       </div>
       
       <!-- /page content -->
@@ -167,9 +123,7 @@ $user_request_query="select tbl_user.User_ID,tbl_user.F_Name,tbl_user.L_Name,tbl
       <!-- /footer content -->
     </div>
   </div>
-    <form id="student_form" action="./staff_controller_approove_student.php" method="post">
-        <input type="hidden" id="student_id" name="id">
-    </form>          
+             
   <div id="custom_notifications" class="custom-notifications dsp_none">
     <ul class="list-unstyled notifications clearfix" data-tabbed_notifications="notif-group">
     </ul>
@@ -203,12 +157,7 @@ $user_request_query="select tbl_user.User_ID,tbl_user.F_Name,tbl_user.L_Name,tbl
         <script src="js/datatables/dataTables.responsive.min.js"></script>
         <script src="js/datatables/responsive.bootstrap.min.js"></script>
         <script src="js/datatables/dataTables.scroller.min.js"></script>
-  <script>
-   function approove(id){
-          $("#student_id").val(id);
-          $("#student_form").submit();
-      }
-  </script>
+  
 </body>
 
 </html>

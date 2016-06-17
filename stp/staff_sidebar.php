@@ -9,7 +9,7 @@
           <!-- menu prile quick info -->
           <div class="profile">
             <div class="profile_pic">
-                <img src="images/admin.png" alt="..." class="img-circle profile_img">
+                <img src="images/teacher.jpg" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
               <span>Welcome,</span>
@@ -34,10 +34,10 @@
                 </li>
                 <li><a href="staff_profile.php"><i class="fa fa-desktop"></i> Profle</a>
                 </li>
-                <li><a href="#"><i class="fa fa-table"></i> Assignments </a>
+                <li><a href="./staff_assignment.php#"><i class="fa fa-table"></i> Assignments </a>
              
                 </li>
-                <li><a href="#"><i class="fa fa-bar-chart-o"></i> Tasks </a></li>
+                <li><a href="staff_task.php"><i class="fa fa-bar-chart-o"></i> Tasks </a></li>
               </ul>
             </div>
           </div>

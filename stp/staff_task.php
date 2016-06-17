@@ -1,9 +1,13 @@
 <?php
-include './admin_session_check.php';
 include './config.php';
-//$programs_dropdown_query="select * from tbl_programs";
-$programs_dropdown_query="select Program_ID,program_Name,Institute_Name from tbl_programs tb_p INNER JOIN tbl_institute tbl_i WHERE tb_p.Institute_ID = tbl_i.Institute_ID";
+include './staff_session_check.php';
+include './staff_profile_complete_check.php';
+$user_id=$_SESSION['user_id'];
 
+$course_id_query="select tbl_user_course.Course_ID from tbl_user_course where tbl_user_course.User_ID='$user_id'";
+$q_result=mysqli_query($con,$course_id_query);	
+$row= mysqli_fetch_array($q_result);
+$course_id=$row['Course_ID'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +50,7 @@ $programs_dropdown_query="select Program_ID,program_Name,Institute_Name from tbl
   <link href="js/datatables/fixedHeader.bootstrap.min.css" rel="stylesheet" type="text/css" />
   <link href="js/datatables/responsive.bootstrap.min.css" rel="stylesheet" type="text/css" />
   <link href="js/datatables/scroller.bootstrap.min.css" rel="stylesheet" type="text/css" />
-
+  <link href="js/jqdatepicker/jquery-ui.css" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -58,10 +62,10 @@ $programs_dropdown_query="select Program_ID,program_Name,Institute_Name from tbl
 
     <div class="main_container">
 
-       <?php include './admin_sidebar.php'; ?>
+       <?php include './staff_sidebar.php'; ?>
 
       <!-- top navigation -->
-      <?php include './admin_topbar.php'; ?>
+      <?php include './staff_topbar.php'; ?>
       <!-- /top navigation -->
 
       <!-- page content -->
@@ -70,7 +74,7 @@ $programs_dropdown_query="select Program_ID,program_Name,Institute_Name from tbl
         <div class="" style="min-height: 100% !important;">
           <div class="page-title">
             <div class="title_left">
-              <h3>Course <small>List </small></h3>
+              <h3>Task <small>List </small></h3>
             </div>
 
    
@@ -81,11 +85,11 @@ $programs_dropdown_query="select Program_ID,program_Name,Institute_Name from tbl
               <div class="col-md-12" >
               <div class="x_panel" >
                 <div class="x_title">
-                    <h2>Course</h2> &nbsp;<button class="btn btn-success" onclick="showAddModal();">Add Course</button>
+                    <h2>Task</h2> &nbsp;<button class="btn btn-success" onclick="showAddModal();">Add Task</button>
                   <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>
-                
+              
                     <li><a class="close-link"><i class="fa fa-close"></i></a>
                     </li>
                   </ul>
@@ -93,53 +97,63 @@ $programs_dropdown_query="select Program_ID,program_Name,Institute_Name from tbl
                 </div>
                 <div class="x_content">
 
-                  <p>List Of Courses</p>
+                  <p>List Of tasks</p>
                   <?php
-                   $course_query="select tbl_course.Course_ID,tbl_course.Course_Name,tbl_course.Course_Dsecription,tbl_course.Percentage_Of_Fulltime,tbl_programs.Program_ID,tbl_programs.program_Name,tbl_institute.Institute_Name from tbl_course inner join tbl_course_program on tbl_course_program.Course_ID=tbl_course.Course_ID inner join tbl_programs on tbl_course_program.Program_ID=tbl_programs.Program_ID inner join tbl_institute on tbl_institute.Institute_ID=tbl_programs.Institute_ID";
-                   $results = $con->query($course_query);
-                   $i=1;
-                          
+//                  $assignment_query="select tbl_assignment.Assignment_ID,tbl_assignment.Start_Date,tbl_assignment.End_Date,tbl_assignment.Assignment_Name,tbl_assignment.Weightage,tbl_assignment.preffereed_Hours,tbl_course.Course_Name from tbl_assignment inner join tbl_course on tbl_course.Course_ID=tbl_assignment.Course_ID where tbl_assignment.author_id=";
+//
+//                   $results = $con->query($assignment_query);
+//                   $i=1;                          
                   ?>
                   <!-- start project list -->
                   <table id="program_table" class="table table-striped projects">
                     <thead>
                       <tr>
                         <th style="width: 1%">#</th>
-                        <th style="width: 8%">Name</th>
-			<th style="width: 20%">Description</th>
-                        <th>% of fulltime</th>    
-                        <th>Program</th>   
-                        <th>Institute</th>   
-                        <th style="width: 15%">Edit</th>
+                        <th style="width: 8%">Task</th>
+                         <th style="width: 8%">Description</th>
+			<th >Start Date</th>
+                        <th>End Date</th> 
+                        <th>Weightage</th>  
+                        <th>prefered hours</th>  
+                        <th>Edit</th>
                       </tr>
                     </thead>
                     <tbody>
-                        <?php while($row = $results->fetch_assoc()) { ?>
+                     <?php
+                   $assignment_query="select * from tbl_task where  tbl_task.author_id='$user_id' and tbl_task.Course_ID='$course_id'";
+                   $results = $con->query($assignment_query);
+                   $i=1; 
+                     
+                     while($row = $results->fetch_assoc()) { ?>
                       <tr>
                         <td>
                               <?php echo $i; ?>
                         </td>
                         <td>
-                         <?php echo $row['Course_Name']; ?>
+                         <?php echo $row['Task_Name']; ?>
+                  
+                        </td>
+                        <td>
+                         <?php echo $row['Task_Description']; ?>
                   
                         </td>
 			<td>
-                          <?php echo $row['Course_Dsecription']; ?>
+                          <?php echo $row['Task_start_date']; ?>
 
                         </td>
                         <td>
-                           <?php echo $row['Percentage_Of_Fulltime']; ?>
+                           <?php echo $row['Task_due_date']; ?>
                         </td>  
                         <td>
-                           <?php echo $row['program_Name']; ?>
+                           <?php echo $row['preferred_hour']; ?>
                         </td> 
                         <td>
-                           <?php echo $row['Institute_Name']; ?>
+                           <?php echo $row['preferred_hour']; ?>
                         </td> 
                         <td>
                         <!--  <a href="#" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a> -->
-                            <button class="btn btn-info btn-xs" onclick="getProgramDetail('<?php echo $row['Course_ID']; ?>')"><i class="fa fa-pencil"></i> Edit </button>
-                          <button class="btn btn-danger btn-xs" onclick="deleteProgram('<?php echo $row['Course_ID']; ?>');"><i class="fa fa-trash-o"></i> Delete </button>
+                          <button class="btn btn-info btn-xs" onclick="getProgramDetail('<?php echo $row['Task_ID']; ?>')"><i class="fa fa-pencil"></i> Edit </button>
+                          <button class="btn btn-danger btn-xs" onclick="deleteProgram('<?php echo $row['Task_ID']; ?>');"><i class="fa fa-trash-o"></i> Delete </button>
                         </td>
                       </tr>
                         <?php 
@@ -161,7 +175,7 @@ $programs_dropdown_query="select Program_ID,program_Name,Institute_Name from tbl
       <!-- /page content -->
 
       <!-- footer content -->
-      <?php include './admin_footer.php'; ?>
+      <?php include './staff_footer.php'; ?>
       <!-- /footer content -->
     </div>
   </div>
@@ -173,73 +187,81 @@ $programs_dropdown_query="select Program_ID,program_Name,Institute_Name from tbl
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
                         </button>
-                        <h4 class="modal-title" id="myModalLabel2">Add Course</h4>
+                        <h4 class="modal-title" id="myModalLabel2">Add Task</h4>
                       </div>
-                        <form action="admin_controller_add_course.php" method="post">
+                        <form action="staff_controller_add_task.php" method="post">
                       <div class="modal-body">
                         
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-12">     
+                           
                                 <div class="form-group">
                                     <div class="col-md-6">  
-                                        <label for="name">Course Name </label>
+                                        <label for="name">Task Name</label>
                                     </div>
                                 <div class="col-md-6">
-                                    <input type="text" id="name" name="name" required="required" placeholder="course name" class="form-control">
+                                    <input type="text" id="name" name="name" required="required"  class="form-control">
                                 </div>
                                 </div>
                                 <br/>
                                 <br/>
                                 <div class="form-group">
                                     <div class="col-md-6">  
-                                        <label for="description">Description </label>
+                                        <label for="description">Task Description</label>
                                     </div>
                                 <div class="col-md-6">
-                                    <input type="text" id="description" name="description" required="required" placeholder="description" class="form-control">
+                                    <input type="text" id="description" name="description" required="required"  class="form-control">
                                 </div>
                                 </div>
                                 <br/>
                                 <br/>
                                 <div class="form-group">
                                     <div class="col-md-6">  
-                                        <label for="percentage">Percentage Of Fulltime </label>
+                                        <label for="start_date">Start Date</label>
                                     </div>
                                 <div class="col-md-6">
-                                    <input type="number" id="percentage" name="percentage" required="required" placeholder="percentage" class="form-control">
+                                    <input type="text" id="start_date" name="start_date" required="required"  class="form-control">
                                 </div>
                                 </div>
                                 <br/>
                                 <br/>
                                 <div class="form-group">
                                     <div class="col-md-6">  
-                                        <label for="description">Program </label>
+                                        <label for="description">End date </label>
                                     </div>
-                                    <div class="col-md-6">
-                                    <select class="form-control" required name="program">
-				               <?php
-                                                    //$stmt = $con->prepare($user_type_query);
-                                                    $results2 = $con->query($programs_dropdown_query);
-                            
-                                                 ?>
-				<option value="">Please Select </option>
-                                <?php while($row = $results2->fetch_assoc()) { ?>
-                                <option value="<?php echo $row["Program_ID"]; ?>"><?php echo $row["program_Name"]."(".$row["Institute_Name"].")"; ?></option>
-                                <?php } 
-                                $results2->free();
-                                // close connection 
-                               ?>
-			</select>
-            </div>
+                                <div class="col-md-6">
+                                    <input type="text" id="end_date" name="end_date" required="required"  class="form-control">
+                                </div>
                                 </div>
                                 <br/>
                                 <br/>
-                          
+                                <div class="form-group">
+                                    <div class="col-md-6">  
+                                        <label for="weightage">Weightage </label>
+                                    </div>
+                                <div class="col-md-6">
+                                    <input type="text" id="weightage" name="weightage" required="required" placeholder="weightage" class="form-control">
+                                </div>
+                                </div>
+                                <br/>
+                                <br/>
+                                 <div class="form-group">
+                                    <div class="col-md-6">  
+                                        <label for="hour">Preferred Hours </label>
+                                    </div>
+                                <div class="col-md-6">
+                                    <input type="text" id="hour" name="hours" required="required" placeholder="hours" class="form-control">
+                                </div>
+                                </div>
+                                <br/>
+                                <br/>
+                                <input type="hidden" name="course" value="<?php echo $course_id; ?>">
                             </div>
                         </div>
                       </div>
                       <div class="modal-footer">
                           <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
-                          <button type="submit" class="btn btn-primary">Save changes</button>
+                          <button type="submit" class="btn btn-primary">Release Task</button>
                       </div>
                       </form>
                     </div>
@@ -253,74 +275,82 @@ $programs_dropdown_query="select Program_ID,program_Name,Institute_Name from tbl
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
                         </button>
-                        <h4 class="modal-title" id="myModalLabel2">Add Institute</h4>
+                        <h4 class="modal-title" id="myModalLabel2">Edit Task</h4>
                       </div>
-                        <form action="admin_controller_update_course.php" method="post">
-                      <div class="modal-body">
+                        <form action="staff_controller_update_task.php" method="post">
+           <div class="modal-body">
                         
-                        <div class="row">
-                            <div class="col-md-12">
+                               <div class="row">
+                            <div class="col-md-12">     
+                           
                                 <div class="form-group">
                                     <div class="col-md-6">  
-                                        <label for="name">Course Name </label>
+                                        <label for="name">Task Name</label>
                                     </div>
                                 <div class="col-md-6">
-                                    <input type="text" id="edit_name" name="name" required="required" placeholder="course name" class="form-control">
+                                    <input type="text" id="edit_name" name="name" required="required"  class="form-control">
                                 </div>
                                 </div>
                                 <br/>
                                 <br/>
                                 <div class="form-group">
                                     <div class="col-md-6">  
-                                        <label for="description">Description </label>
+                                        <label for="description">Task Description</label>
                                     </div>
                                 <div class="col-md-6">
-                                    <input type="text" id="edit_description" name="description" required="required" placeholder="description" class="form-control">
+                                    <input type="text" id="edit_description" name="description" required="required"  class="form-control">
                                 </div>
                                 </div>
                                 <br/>
                                 <br/>
                                 <div class="form-group">
                                     <div class="col-md-6">  
-                                        <label for="percentage">Percentage Of Fulltime </label>
+                                        <label for="start_date">Start Date</label>
                                     </div>
                                 <div class="col-md-6">
-                                    <input type="number" id="edit_percentage" name="percentage" required="required" placeholder="percentage" class="form-control">
+                                    <input type="text" id="edit_start_date" name="start_date" required="required"  class="form-control">
                                 </div>
                                 </div>
                                 <br/>
                                 <br/>
                                 <div class="form-group">
                                     <div class="col-md-6">  
-                                        <label for="description">Program </label>
+                                        <label for="description">End date </label>
                                     </div>
-                                    <div class="col-md-6">
-                                        <select id="edit_program" class="form-control" required name="program">
-				               <?php
-                                                    //$stmt = $con->prepare($user_type_query);
-                                                    $results2 = $con->query($programs_dropdown_query);
-                            
-                                                 ?>
-				<option value="">Please Select </option>
-                                <?php while($row = $results2->fetch_assoc()) { ?>
-                                <option value="<?php echo $row["Program_ID"]; ?>"><?php echo $row["program_Name"]; ?></option>
-                                <?php } 
-                                $results2->free();
-                                // close connection 
-                               ?>
-			</select>
-            </div>
+                                <div class="col-md-6">
+                                    <input type="text" id="edit_end_date" name="end_date" required="required"  class="form-control">
+                                </div>
                                 </div>
                                 <br/>
                                 <br/>
-                          
+                                <div class="form-group">
+                                    <div class="col-md-6">  
+                                        <label for="weightage">Weightage </label>
+                                    </div>
+                                <div class="col-md-6">
+                                    <input type="text" id="edit_weightage" name="weightage" required="required" placeholder="weightage" class="form-control">
+                                </div>
+                                </div>
+                                <br/>
+                                <br/>
+                                 <div class="form-group">
+                                    <div class="col-md-6">  
+                                        <label for="hour">Prefered Hours </label>
+                                    </div>
+                                <div class="col-md-6">
+                                    <input type="text" id="edit_hours" name="hours" required="required" placeholder="hours" class="form-control">
+                                </div>
+                                </div>
+                                <br/>
+                                <br/>
+                                <input type="hidden" id="edit_course" name="course" value="<?php echo $course_id; ?>">
                             </div>
                         </div>
                       </div>
                       <input id="edit_id" type="hidden" name="id"> 
                       <div class="modal-footer">
                           <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
-                          <button type="submit" class="btn btn-primary">Save changes</button>
+                          <button type="submit" class="btn btn-primary">Release Task</button>
                       </div>
                       </form>
                     </div>
@@ -334,7 +364,7 @@ $programs_dropdown_query="select Program_ID,program_Name,Institute_Name from tbl
     <div class="clearfix"></div>
     <div id="notif-group" class="tabbed_notifications"></div>
   </div>
-                <form id="delete_form" action="admin_controller_delete_course.php" method="post">
+                <form id="delete_form" action="staff_controller_delete_task.php" method="post">
                     <input type="hidden" name="id" id="delete_id">
                 </form>
   <script src="js/bootstrap.min.js"></script>
@@ -363,33 +393,53 @@ $programs_dropdown_query="select Program_ID,program_Name,Institute_Name from tbl
         <script src="js/datatables/dataTables.responsive.min.js"></script>
         <script src="js/datatables/responsive.bootstrap.min.js"></script>
         <script src="js/datatables/dataTables.scroller.min.js"></script>
+        <script type="text/javascript" src="js/jqdatepicker/jquery-ui.js"></script>
   <script>
       function deleteProgram(id){
           $("#delete_id").val(id);
           $("#delete_form").submit();
       }
   $("#program_table").DataTable(
-          {
+    {
     "aoColumnDefs": [{
       "bSortable": false, 
-      "aTargets": [6]
+      "aTargets": [7]
     }]
   }       
     );
   
   function getProgramDetail(id){
-       $.getJSON('admin_controller_edit_course.php?id='+id, function(jd) {
-                   $("#edit_id").val(jd.Course_ID);
-                   $("#edit_name").val(jd.Course_Name);
-                   $("#edit_description").val(jd.Course_Dsecription);
-                   $("#edit_percentage").val(jd.Percentage_Of_Fulltime);
-                   $("#edit_program").val(jd.Program_ID);                   
+       $.getJSON('staff_controller_edit_task.php?id='+id, function(jd) {
+                   $("#edit_id").val(jd.Task_ID);
+                   $("#edit_start_date").val(jd.Task_start_date);
+                   $("#edit_end_date").val(jd.Task_due_date);
+                   $("#edit_name").val(jd.Task_Name);
+                   $("#edit_description").val(jd.Task_Description);
+                   $("#edit_course").val(jd.course_id); 
+                   $("#edit_hours").val(jd.preferred_hour); 
+                   $("#edit_weightage").val(jd.weightage); 
                });
                $('#edit_modal').modal('show');  
   }
      function showAddModal(){
       $('#add_modal').modal('show');  
   } 
+  
+   $(document).ready(function() {
+       $( "#start_date" ).datepicker({
+             dateFormat: "yy-mm-dd"
+        });
+         $( "#end_date" ).datepicker({
+             dateFormat: "yy-mm-dd"
+        });
+         $( "#edit_end_date" ).datepicker({
+             dateFormat: "yy-mm-dd"
+        });
+         $( "#edit_start_date" ).datepicker({
+             dateFormat: "yy-mm-dd"
+        });
+    });
+
   </script>
 </body>
 

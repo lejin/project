@@ -31,7 +31,7 @@ include './config.php';
 	//	if((mysqli_affected_rows($con) > 0))
 	//	{
                            $query = mysqli_query($con,$insert_query)  or die(mysqli_error($con));                 
-                            header("location:staff_profile.php");
+                            header("location:student_profile.php");
 		//}
 //		else
 //		{
